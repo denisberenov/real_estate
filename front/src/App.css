@@ -1,0 +1,24 @@
+.button {
+  padding: 15px 40px;
+  margin: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+  box-shadow: 0 5px 15px rgba(38, 50, 56, 0.2);
+}
+
+.button:hover {
+  background: linear-gradient(45deg, #2575fc, #6a11cb);
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(38, 50, 56, 0.4);
+}
+
+.button:active {
+  transform: scale(0.95);
+  box-shadow: 0 3px 10px rgba(38, 50, 56, 0.2);
+}

@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: postgres:15-alpine
@@ -8,13 +10,14 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"  
+      - "5432:5432"
 
   web:
-    build: .
+    build:
+      context: ./back
     command: python /app/manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./app:/app
+      - ./back/app:/app
     env_file:
       - .env
     ports:
@@ -28,6 +31,14 @@ services:
       - DATABASE_HOST=db
       - DATABASE_PORT=5432
 
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - web
+
 volumes:
   postgres_data:
-
