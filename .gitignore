@@ -1,0 +1,11 @@
+.idea/
+*.log
+*.pot
+*.pyc
+__pycache__/
+.Trash-*
+*.DS_Store
+._*
+*.jpg
+*.jpeg
+*.env

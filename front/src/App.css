@@ -1,24 +1,126 @@
+/* Overall page background with subtle gradient */
+.app-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #e0eafc, #cfdef3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: 'Poppins', sans-serif;
+  animation: fadeIn 1.2s ease forwards;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header title styling */
+.header {
+  font-size: 3.8rem;
+  font-weight: 900;
+  color: #1e40af; /* Dark blue */
+  margin-bottom: 80px;
+  user-select: none;
+  text-shadow: 2px 2px 8px rgba(30, 64, 175, 0.4);
+  animation: fadeIn 1.5s ease forwards;
+}
+
+/* Container for buttons */
+.button-container {
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Button base styles */
 .button {
-  padding: 15px 40px;
-  margin: 20px;
-  font-size: 18px;
-  font-weight: bold;
-  color: white;
-  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  background: #3b82f6; /* Blue */
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
+  padding: 18px 48px;
+  color: white;
+  font-weight: 600;
+  font-size: 1.3rem;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
-  box-shadow: 0 5px 15px rgba(38, 50, 56, 0.2);
+  box-shadow: 0 8px 15px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s ease;
+  user-select: none;
+  min-width: 150px;
+  text-align: center;
 }
 
+/* Hover effect */
 .button:hover {
-  background: linear-gradient(45deg, #2575fc, #6a11cb);
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(38, 50, 56, 0.4);
+  background: #2563eb; /* Darker blue */
+  box-shadow: 0 12px 25px rgba(37, 99, 235, 0.5);
+  transform: translateY(-4px) scale(1.05);
 }
 
+/* Click effect */
 .button:active {
-  transform: scale(0.95);
-  box-shadow: 0 3px 10px rgba(38, 50, 56, 0.2);
+  background: #1d4ed8; /* Even darker blue */
+  box-shadow: 0 6px 12px rgba(29, 78, 216, 0.3);
+  transform: translateY(-2px) scale(0.97);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .header {
+    font-size: 2.8rem;
+    margin-bottom: 50px;
+  }
+  .button-container {
+    gap: 25px;
+  }
+  .button {
+    min-width: 120px;
+    font-size: 1.1rem;
+    padding: 14px 36px;
+  }
+}
+
+/* Footer styling without border */
+.footer {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #4b5563;
+  user-select: none;
+  background: transparent;
+  font-weight: 500;
+}
+
+.footer a {
+  color: #2563eb;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #1e40af;
+  text-decoration: underline;
+}
+
+/* Make the whole page fill the viewport height exactly, no scroll */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* disable scrolling */
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* full viewport height */
+  justify-content: center; /* center content vertically */
+  align-items: center; /* center horizontally */
+  background: #f0f4f8; /* light background, optional */
+  position: relative;
+  padding: 20px;
+  box-sizing: border-box;
 }
