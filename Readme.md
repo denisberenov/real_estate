@@ -1,0 +1,1 @@
+curl -X GET http://0.0.0.0:8000/api/real-estate/objects/ -H "X-API-TOKEN: your_generated_secret_token_here" . | jq
