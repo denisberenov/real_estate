@@ -12,7 +12,8 @@ services:
     ports:
       - "5432:5432"
 
-  web:
+  back:
+    container_name: back
     build:
       context: ./back
     command: python /app/manage.py runserver 0.0.0.0:8000
@@ -32,13 +33,14 @@ services:
       - DATABASE_PORT=5432
 
   front:
+    container_name: front
     build:
       context: ./front
       dockerfile: Dockerfile
     ports:
       - "3000:80"
     depends_on:
-      - web
+      - back
 
 volumes:
   postgres_data:

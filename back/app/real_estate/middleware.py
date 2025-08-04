@@ -7,6 +7,8 @@ class SimpleTokenMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        if request.path.startswith('/admin/') or request.path.startswith('/static/'):
+            return self.get_response(request)
         token = request.headers.get('X-API-TOKEN')
         if token != settings.API_SECRET_TOKEN:
             return JsonResponse({'detail': 'Unauthorized'}, status=401)
