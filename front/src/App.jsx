@@ -33,7 +33,7 @@ export default function App() {
 
   return (
     <div className="app-container">
-      {!data && <header className="header">Direct Real Estate</header>}
+      <header className="header">Direct Real Estate</header>
 
       {!data && (
         <div className="button-container">
