@@ -166,3 +166,25 @@ body.has-results .app-container {
   }
   .results-wrapper { width: 90%; }
 }
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.upload-form input, 
+.upload-form select,
+.upload-form textarea {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.upload-form .button {
+  margin-top: 10px;
+}
