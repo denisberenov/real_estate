@@ -188,3 +188,36 @@ body.has-results .app-container {
 .upload-form .button {
   margin-top: 10px;
 }
+
+.details-overlay {
+  position: fixed; /* stays in place even if page is scrolled */
+  top: 0;
+  left: 0;
+  width: 100vw; /* cover full screen width */
+  height: 100vh; /* cover full screen height */
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.details-box {
+  background: white;
+  padding: 20px;
+  max-width: 600px;
+  width: 90%;
+  border-radius: 10px;
+  max-height: 90vh;
+  overflow-y: auto; /* scroll inside box if too tall */
+}
+
+.close-button {
+  background: #ff5a5a;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  float: right;
+}

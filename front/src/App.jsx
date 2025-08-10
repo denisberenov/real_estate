@@ -1,5 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import { createPortal } from 'react-dom';
+
+function DetailsModal({ obj, onClose }) {
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+
+  const fmtNum = (n) => {
+    const num = typeof n === 'number' ? n : parseFloat(n);
+    return Number.isFinite(num) ? num.toLocaleString() : n;
+  };
+
+  return createPortal(
+    <div className="details-overlay" onClick={onClose}>
+      <div className="details-box" onClick={(e) => e.stopPropagation()}>
+        <button className="close-button" onClick={onClose}>Close</button>
+        <h1>{obj.title}</h1>
+        <p><strong>Description:</strong> {obj.description}</p>
+        <p><strong>Address:</strong> {obj.address}</p>
+        <p><strong>City:</strong> {obj.city}</p>
+        <p><strong>Price:</strong> ${fmtNum(obj.price)}</p>
+        <p><strong>Area:</strong> {fmtNum(obj.area_sq_m)} m²</p>
+        <p><strong>Rooms:</strong> {obj.rooms}</p>
+        <p><strong>Property Type:</strong> {obj.property_type}</p>
+        {obj.created_at && (
+          <p><strong>Created At:</strong> {new Date(obj.created_at).toLocaleString()}</p>
+        )}
+      </div>
+    </div>,
+    document.body
+  );
+}
 
 const PROPERTY_TYPES = [
   { value: 'house', label: 'House' },
@@ -23,6 +59,7 @@ export default function App() {
 
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [selectedObject, setSelectedObject] = useState(null);
 
   const handleSearchClick = async () => {
     setShowForm(false);
@@ -75,6 +112,7 @@ export default function App() {
       setShowForm(false);
       setFormData({
         title: '',
+        description: '',
         address: '',
         city: '',
         price: '',
@@ -98,22 +136,25 @@ export default function App() {
             className="button"
             onClick={() => {
               setShowForm(true);
-              setData(null); // This hides the data results
+              setData(null);
             }}
           >
             Upload
-        </button>
+          </button>
         )}
         {!data && (
           <button className="button" onClick={handleSearchClick}>Search</button>
         )}
       </div>
 
+      {error && (
+        <div className="results-container error">
+          {error}
+        </div>
+      )}
+
       {showForm && (
-        <form
-          className="upload-form"
-          onSubmit={handleFormSubmit}
-        >
+        <form className="upload-form" onSubmit={handleFormSubmit}>
           <input
             type="text"
             placeholder="Title"
@@ -177,16 +218,29 @@ export default function App() {
           <div className="results-list">
             {data.map((item) => (
               <div key={item.id} className="result-card">
-                <h2>{item.title}</h2>
+                <h2
+                  className="clickable-title"
+                  onClick={() => setSelectedObject(item)}
+                  style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                >
+                  {item.title}
+                </h2>
                 <p><strong>Address:</strong> {item.address}, {item.city}</p>
-                <p><strong>Price:</strong> ${parseFloat(item.price).toLocaleString()}</p>
-                <p><strong>Area:</strong> {parseFloat(item.area_sq_m).toLocaleString()} m²</p>
+                <p><strong>Price:</strong> ${Number(item.price).toLocaleString()}</p>
+                <p><strong>Area:</strong> {Number(item.area_sq_m).toLocaleString()} m²</p>
                 <p><strong>Rooms:</strong> {item.rooms}</p>
                 <p><strong>Type:</strong> {item.property_type}</p>
               </div>
             ))}
           </div>
         </div>
+      )}
+
+      {selectedObject && (
+        <DetailsModal
+          obj={selectedObject}
+          onClose={() => setSelectedObject(null)}
+        />
       )}
 
       <footer className="footer">
@@ -203,5 +257,4 @@ export default function App() {
       </footer>
     </div>
   );
-
 }
