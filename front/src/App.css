@@ -52,6 +52,19 @@ body.has-results .app-container {
   animation: fadeIn 1.5s ease forwards;
 }
 
+.top-right-header {
+  position: absolute; /* or fixed if you want it to stay while scrolling */
+  top: 20px; /* distance from the top */
+  left: 100px; 
+
+  font-size: 3rem;
+  font-weight: 900;
+  color: #1e40af;
+  text-shadow: 2px 2px 8px rgba(30, 64, 175, 0.4);
+  user-select: none;
+  animation: fadeIn 1.5s ease forwards;
+}
+
 /* ==========  BUTTONS  ================================================= */
 
 .button-container {
@@ -220,4 +233,29 @@ body.has-results .app-container {
   border-radius: 6px;
   cursor: pointer;
   float: right;
+}
+
+.top-right-upload, 
+.top-right-search {
+  position: fixed;
+  top: 20px;
+  right: 100px;
+  background: #3b82f6;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 8px 15px rgba(59, 130, 246, 0.3);
+  z-index: 1000; /* stays above results */
+  transition: all 0.3s ease;
+}
+
+.top-right-upload:hover,
+.top-right-search:hover {
+  background: #2563eb;
+  box-shadow: 0 12px 25px rgba(37, 99, 235, 0.5);
+  transform: translateY(-2px);
 }

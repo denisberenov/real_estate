@@ -128,10 +128,18 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <header className="header">Direct Real Estate</header>
+    <header
+      className={
+        !data && !showForm
+          ? "header"
+          : "top-right-header"
+      }
+    >
+      Direct Real Estate
+    </header>
 
       <div className="button-container">
-        {!showForm && (
+        {!showForm && !data && (
           <button
             className="button"
             onClick={() => {
@@ -143,9 +151,27 @@ export default function App() {
           </button>
         )}
         {!data && (
-          <button className="button" onClick={handleSearchClick}>Search</button>
+          <button
+            className={showForm ? "top-right-search" : "button"}
+            onClick={handleSearchClick}
+          >
+            Search
+          </button>
         )}
       </div>
+
+      {/* Top-right upload button when results are shown */}
+      {data && !showForm && (
+        <button
+          className="top-right-upload"
+          onClick={() => {
+            setShowForm(true);
+            setData(null);
+          }}
+        >
+          Upload
+        </button>
+      )}
 
       {error && (
         <div className="results-container error">
