@@ -58,13 +58,15 @@ export default function App() {
   });
 
   const [data, setData] = useState(null);
+  const [page, setPage] = useState(1);
+
   const [error, setError] = useState(null);
   const [selectedObject, setSelectedObject] = useState(null);
 
-  const handleSearchClick = async () => {
+  const handleSearchClick = async (pageNumber) => {
     setShowForm(false);
     try {
-      const response = await fetch('/api/real-estate/objects/', {
+      const response = await fetch(`/api/real-estate/objects/?page=${pageNumber}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -87,6 +89,10 @@ export default function App() {
       setData(null);
     }
   };
+
+  useEffect(() => {
+    handleSearchClick(page);
+  }, [page]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -242,7 +248,7 @@ export default function App() {
       {data && (
         <div className="results-wrapper">
           <div className="results-list">
-            {data.map((item) => (
+            {data.results.map((item) => (
               <div key={item.id} className="result-card">
                 <h2
                   className="clickable-title"
@@ -259,6 +265,24 @@ export default function App() {
               </div>
             ))}
           </div>
+
+          {/* Pagination Controls */}
+          <div className="pagination-controls">
+            <button
+              onClick={() => setPage(page - 1)}
+              disabled={!data.previous}
+            >
+              Previous
+            </button>
+            <span>Page {page}</span>
+            <button
+              onClick={() => setPage(page + 1)}
+              disabled={!data.next}
+            >
+              Next
+            </button>
+          </div>
+
         </div>
       )}
 

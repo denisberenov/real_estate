@@ -3,5 +3,5 @@ from .models import RealEstateObject
 from .serializers import RealEstateObjectSerializer
 
 class RealEstateObjectViewSet(viewsets.ModelViewSet):
-    queryset = RealEstateObject.objects.all()
+    queryset = RealEstateObject.objects.all().order_by('-created_at')
     serializer_class = RealEstateObjectSerializer

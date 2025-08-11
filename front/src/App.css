@@ -109,6 +109,8 @@ body.has-results .app-container {
   width: 60%;
   max-width: 1200px;
   display: flex;
+  flex-direction: column;
+  align-items: center; 
   justify-content: center;
   padding: 2rem 0;
 }
@@ -258,4 +260,42 @@ body.has-results .app-container {
   background: #2563eb;
   box-shadow: 0 12px 25px rgba(37, 99, 235, 0.5);
   transform: translateY(-2px);
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px; /* space from results */
+}
+
+.pagination-controls button {
+  background-color: #3b82f6; /* blue button */
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  background-color: #2563eb; /* darker blue */
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+}
+
+.pagination-controls button:disabled {
+  background-color: #cbd5e1; /* light gray */
+  color: #6b7280;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.pagination-controls span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
 }
