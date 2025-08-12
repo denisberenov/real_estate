@@ -1,0 +1,12 @@
+.results-container {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f6f6f6;
+  border-radius: 8px;
+  max-width: 800px;
+  width: 90%;
+  white-space: pre-wrap;
+}
+
+.json-output { font-family: monospace; font-size: 0.9rem; }
+.error { color: red; font-weight: bold; }

@@ -1,0 +1,25 @@
+.header {
+  font-size: 3.8rem;
+  font-weight: 900;
+  color: #1e40af;
+  margin-bottom: 80px;
+  text-shadow: 2px 2px 8px rgba(30, 64, 175, 0.4);
+  user-select: none;
+  animation: fadeIn 1.5s ease forwards;
+}
+
+.top-right-header {
+  position: absolute;
+  top: 20px;
+  left: 100px;
+  font-size: 3rem;
+  font-weight: 900;
+  color: #1e40af;
+  text-shadow: 2px 2px 8px rgba(30, 64, 175, 0.4);
+  user-select: none;
+  animation: fadeIn 1.5s ease forwards;
+}
+
+@media (max-width: 480px) {
+  .header { font-size: 2.8rem; margin-bottom: 50px; }
+}

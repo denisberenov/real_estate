@@ -1,41 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { createPortal } from 'react-dom';
-
-function DetailsModal({ obj, onClose }) {
-  useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, []);
-
-  const fmtNum = (n) => {
-    const num = typeof n === 'number' ? n : parseFloat(n);
-    return Number.isFinite(num) ? num.toLocaleString() : n;
-  };
-
-  return createPortal(
-    <div className="details-overlay" onClick={onClose}>
-      <div className="details-box" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={onClose}>Close</button>
-        <h1>{obj.title}</h1>
-        <p><strong>Description:</strong> {obj.description}</p>
-        <p><strong>Address:</strong> {obj.address}</p>
-        <p><strong>City:</strong> {obj.city}</p>
-        <p><strong>Price:</strong> ${fmtNum(obj.price)}</p>
-        <p><strong>Area:</strong> {fmtNum(obj.area_sq_m)} m²</p>
-        <p><strong>Rooms:</strong> {obj.rooms}</p>
-        <p><strong>Property Type:</strong> {obj.property_type}</p>
-        {obj.created_at && (
-          <p><strong>Created At:</strong> {new Date(obj.created_at).toLocaleString()}</p>
-        )}
-      </div>
-    </div>,
-    document.body
-  );
-}
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import Body from './components/Body/Body';
 
 const PROPERTY_TYPES = [
   { value: 'house', label: 'House' },
@@ -134,177 +102,24 @@ export default function App() {
 
   return (
     <div className="app-container">
-    <header
-      className={
-        !data && !showForm
-          ? "header"
-          : "top-right-header"
-      }
-    >
-      Direct Real Estate
-    </header>
-
-      <div className="button-container">
-        {!showForm && !data && (
-          <button
-            className="button"
-            onClick={() => {
-              setShowForm(true);
-              setData(null);
-            }}
-          >
-            Upload
-          </button>
-        )}
-        {!data && (
-          <button
-            className={showForm ? "top-right-search" : "button"}
-            onClick={handleSearchClick}
-          >
-            Search
-          </button>
-        )}
-      </div>
-
-      {/* Top-right upload button when results are shown */}
-      {data && !showForm && (
-        <button
-          className="top-right-upload"
-          onClick={() => {
-            setShowForm(true);
-            setData(null);
-          }}
-        >
-          Upload
-        </button>
-      )}
-
-      {error && (
-        <div className="results-container error">
-          {error}
-        </div>
-      )}
-
-      {showForm && (
-        <form className="upload-form" onSubmit={handleFormSubmit}>
-          <input
-            type="text"
-            placeholder="Title"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          />
-          <textarea
-            placeholder="Description"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="form-field"
-          />
-          <input
-            type="text"
-            placeholder="Address"
-            value={formData.address}
-            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-          />
-          <input
-            type="text"
-            placeholder="City"
-            value={formData.city}
-            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-          />
-          <input
-            type="number"
-            placeholder="Price"
-            value={formData.price}
-            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-          />
-          <input
-            type="number"
-            placeholder="Area (m²)"
-            value={formData.area_sq_m}
-            onChange={(e) => setFormData({ ...formData, area_sq_m: e.target.value })}
-          />
-          <input
-            type="number"
-            placeholder="Rooms"
-            value={formData.rooms}
-            onChange={(e) => setFormData({ ...formData, rooms: e.target.value })}
-          />
-          <select
-            value={formData.property_type}
-            onChange={(e) => setFormData({ ...formData, property_type: e.target.value })}
-            required
-          >
-            <option value="" disabled>Select Property Type</option>
-            {PROPERTY_TYPES.map(({ value, label }) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-          <button type="submit" className="button">Submit</button>
-        </form>
-      )}
-
-      {data && (
-        <div className="results-wrapper">
-          <div className="results-list">
-            {data.results.map((item) => (
-              <div key={item.id} className="result-card">
-                <h2
-                  className="clickable-title"
-                  onClick={() => setSelectedObject(item)}
-                  style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
-                >
-                  {item.title}
-                </h2>
-                <p><strong>Address:</strong> {item.address}, {item.city}</p>
-                <p><strong>Price:</strong> ${Number(item.price).toLocaleString()}</p>
-                <p><strong>Area:</strong> {Number(item.area_sq_m).toLocaleString()} m²</p>
-                <p><strong>Rooms:</strong> {item.rooms}</p>
-                <p><strong>Type:</strong> {item.property_type}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Pagination Controls */}
-          <div className="pagination-controls">
-            <button
-              onClick={() => setPage(page - 1)}
-              disabled={!data.previous}
-            >
-              Previous
-            </button>
-            <span>Page {page}</span>
-            <button
-              onClick={() => setPage(page + 1)}
-              disabled={!data.next}
-            >
-              Next
-            </button>
-          </div>
-
-        </div>
-      )}
-
-      {selectedObject && (
-        <DetailsModal
-          obj={selectedObject}
-          onClose={() => setSelectedObject(null)}
-        />
-      )}
-
-      <footer className="footer">
-        <p>© 2025 Direct RE. All rights reserved.</p>
-        <p>
-          <a href="https://example.com/privacy" target="_blank" rel="noopener noreferrer">
-            Privacy Policy
-          </a>{' '}
-          |{' '}
-          <a href="https://example.com/terms" target="_blank" rel="noopener noreferrer">
-            Terms of Service
-          </a>
-        </p>
-      </footer>
+      <Header data={data} showForm={showForm} />
+      <Body
+        showForm={showForm}
+        setShowForm={setShowForm}
+        data={data}
+        setData={setData}
+        handleSearchClick={handleSearchClick}
+        error={error}
+        formData={formData}
+        setFormData={setFormData}
+        handleFormSubmit={handleFormSubmit}
+        PROPERTY_TYPES={PROPERTY_TYPES}
+        page={page}
+        setPage={setPage}
+        selectedObject={selectedObject}
+        setSelectedObject={setSelectedObject}
+      />
+      <Footer />
     </div>
   );
 }
