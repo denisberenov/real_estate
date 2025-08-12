@@ -13,6 +13,16 @@ const PROPERTY_TYPES = [
 ];
 
 export default function App() {
+  const [filters, setFilters] = useState({
+    city: '',
+    price: '',
+    area: '',
+    rooms: '',
+    property_type: '',
+  });
+
+  const [showFilters, setShowFilters] = useState(false);
+
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -30,6 +40,10 @@ export default function App() {
 
   const [error, setError] = useState(null);
   const [selectedObject, setSelectedObject] = useState(null);
+
+  const handleOpenFilters = () => {
+    setShowFilters(true);
+  };
 
   const handleSearchClick = async (pageNumber) => {
     setShowForm(false);
@@ -120,6 +134,11 @@ export default function App() {
         setPage={setPage}
         selectedObject={selectedObject}
         setSelectedObject={setSelectedObject}
+        filters={filters}
+        setFilters={setFilters}
+        showFilters={showFilters}
+        handleOpenFilters={handleOpenFilters}
+        setShowFilters={setShowFilters}
       />
       <Footer />
     </div>

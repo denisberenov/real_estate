@@ -2,15 +2,20 @@ import React from 'react';
 
 import './ButtonGroup.css';
 
-export default function ButtonGroup({ showForm, setShowForm, data, setData, setPage, handleSearchClick }) {
+export default function ButtonGroup({ showForm, setShowForm, data, setData, setPage, handleSearchClick, handleOpenFilters, showFilters, setShowFilters }) {
   return (
     <div className="button-container">
       {!showForm && !data && (
         <button
           className="button"
           onClick={() => {
-            setShowForm(true);
-            setData(null);
+            if (showFilters) {
+              setShowFilters(false);
+              setShowForm(true);
+              setData(null);
+            } else {
+              handleOpenFilters()
+            }
           }}
         >
           Upload
@@ -20,8 +25,18 @@ export default function ButtonGroup({ showForm, setShowForm, data, setData, setP
         <button
           className={showForm ? "top-right-search" : "button"}
           onClick={() => {
-            setPage(1);
-            handleSearchClick(1);
+            if (!showFilters) {
+              // First click → show filters, no search
+              console.log("Opening filters first");
+              setShowForm(false);
+              setShowFilters(true);
+            } else {
+              // Second click → hide filters and search
+              console.log("Filters shown, now searching");
+              setShowFilters(false);
+              setPage(1);
+              handleSearchClick(1);
+            }
           }}
         >
           Search
@@ -33,6 +48,7 @@ export default function ButtonGroup({ showForm, setShowForm, data, setData, setP
           onClick={() => {
             setShowForm(true);
             setData(null);
+            setShowFilters(false);
           }}
         >
           Upload

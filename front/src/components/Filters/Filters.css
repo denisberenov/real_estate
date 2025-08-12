@@ -1,0 +1,33 @@
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.filters-container label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.filters-container input,
+.filters-container select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.filters-container input:focus,
+.filters-container select:focus {
+  outline: none;
+  border-color: #007bff; /* or your brand color */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}

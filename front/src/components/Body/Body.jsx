@@ -5,6 +5,7 @@ import UploadForm from '../UploadForm/UploadForm';
 import ResultsList from '../ResultsList/ResultsList';
 import Pagination from '../Pagination/Pagination';
 import DetailsModal from '../DetailsModal/DetailsModal';
+import Filters from '../Filters/Filters';
 
 import './Body.css';
 
@@ -22,10 +23,23 @@ export default function Body({
   setPage,
   selectedObject,
   setSelectedObject,
-  handleSearchClick
+  handleSearchClick,
+  filters,
+  setFilters,
+  showFilters,
+  handleOpenFilters,
+  setShowFilters
 }) {
   return (
     <>
+      {showFilters && !showForm && !data && (
+        <Filters
+          filters={filters}
+          setFilters={setFilters}
+          propertyTypes={PROPERTY_TYPES}
+        />
+      )}
+
       <ButtonGroup
         showForm={showForm}
         setShowForm={setShowForm}
@@ -33,6 +47,9 @@ export default function Body({
         setData={setData}
         setPage={setPage}
         handleSearchClick={handleSearchClick}
+        handleOpenFilters={handleOpenFilters}
+        showFilters={showFilters}
+        setShowFilters={setShowFilters}
       />
 
       <ErrorMessage error={error} />
