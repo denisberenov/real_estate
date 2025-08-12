@@ -26,7 +26,7 @@ export default function App() {
   });
 
   const [data, setData] = useState(null);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(null);
 
   const [error, setError] = useState(null);
   const [selectedObject, setSelectedObject] = useState(null);
@@ -59,7 +59,9 @@ export default function App() {
   };
 
   useEffect(() => {
-    handleSearchClick(page);
+    if (page !== null) {
+      handleSearchClick(page);
+    }
   }, [page]);
 
   const handleFormSubmit = async (e) => {
