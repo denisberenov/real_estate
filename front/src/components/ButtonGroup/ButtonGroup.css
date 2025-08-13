@@ -33,7 +33,23 @@
   transform: translateY(-2px) scale(0.97);
 }
 
-.top-right-upload, 
+.top-right-upload {
+  position: fixed;
+  top: 20px;
+  right: 220px;
+  background: #3b82f6;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 8px 15px rgba(59, 130, 246, 0.3);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
 .top-right-search {
   position: fixed;
   top: 20px;

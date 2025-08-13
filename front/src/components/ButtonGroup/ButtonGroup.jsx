@@ -40,6 +40,18 @@ export default function ButtonGroup({ showForm, setShowForm, data, setData, setP
           Search
         </button>
       )}
+      {data && (
+        <button
+          className="top-right-search"
+          onClick={() => {
+            setData(null)
+            setShowForm(false);
+            setShowFilters(true);
+          }}
+        >
+          Search
+        </button>
+      )}
       {data && !showForm && (
         <button
           className="top-right-upload"
