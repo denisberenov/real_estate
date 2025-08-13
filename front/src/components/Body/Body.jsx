@@ -65,8 +65,18 @@ export default function Body({
 
       {data && (
         <div className="results-wrapper">
-          <ResultsList data={data} setSelectedObject={setSelectedObject} />
-          <Pagination page={page} setPage={setPage} data={data} />
+          {data.results && data.results.length > 0 ? (
+            <>
+              <ResultsList data={data} setSelectedObject={setSelectedObject} />
+              {data.count > 3 && (
+                <Pagination page={page} setPage={setPage} data={data} />
+              )}
+            </>
+          ) : (
+            <p className="no-results-message">
+              No results found. Try adjusting your filters.
+            </p>
+          )}
         </div>
       )}
 
