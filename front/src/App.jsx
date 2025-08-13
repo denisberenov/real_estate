@@ -47,8 +47,19 @@ export default function App() {
 
   const handleSearchClick = async (pageNumber) => {
     setShowForm(false);
+
+    // Build query params from filters + page
+    const params = new URLSearchParams();
+    params.append("page", pageNumber);
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== '' && value !== null) {
+        params.append(key, value);
+      }
+    });
+
     try {
-      const response = await fetch(`/api/real-estate/objects/?page=${pageNumber}`, {
+      const response = await fetch(`/api/real-estate/objects/?${params.toString()}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +87,7 @@ export default function App() {
     if (page !== null) {
       handleSearchClick(page);
     }
-  }, [page]);
+  }, [filters, page]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();

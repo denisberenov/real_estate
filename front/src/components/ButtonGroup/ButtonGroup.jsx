@@ -27,12 +27,10 @@ export default function ButtonGroup({ showForm, setShowForm, data, setData, setP
           onClick={() => {
             if (!showFilters) {
               // First click → show filters, no search
-              console.log("Opening filters first");
               setShowForm(false);
               setShowFilters(true);
             } else {
               // Second click → hide filters and search
-              console.log("Filters shown, now searching");
               setShowFilters(false);
               setPage(1);
               handleSearchClick(1);
