@@ -9,13 +9,9 @@ export default function ButtonGroup({ showForm, setShowForm, data, setData, setP
         <button
           className="button"
           onClick={() => {
-            if (showFilters) {
-              setShowFilters(false);
-              setShowForm(true);
-              setData(null);
-            } else {
-              handleOpenFilters()
-            }
+            setShowFilters(false);
+            setShowForm(true);
+            setData(null);
           }}
         >
           Upload

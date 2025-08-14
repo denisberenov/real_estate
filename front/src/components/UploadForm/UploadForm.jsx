@@ -1,10 +1,18 @@
 import React from 'react';
+import { useState } from "react";
 
 import './UploadForm.css';
 
 export default function UploadForm({ formData, setFormData, handleFormSubmit, PROPERTY_TYPES }) {
+  const [images, setImages] = useState([]);
+
+  const handleFilesChange = (e) => {
+    const selectedFiles = Array.from(e.target.files).slice(0, 10); // max 10 images
+    setImages(selectedFiles);
+  };
+  
   return (
-    <form className="upload-form" onSubmit={handleFormSubmit}>
+    <form className="upload-form" onSubmit={handleFormSubmit} encType="multipart/form-data">
       <input
         type="text"
         placeholder="Title"
@@ -59,6 +67,36 @@ export default function UploadForm({ formData, setFormData, handleFormSubmit, PR
           </option>
         ))}
       </select>
+
+      <div className="file-input-wrapper">
+        <button
+          type="button"
+          className="choose-image-button"
+          onClick={() => document.getElementById("fileInput").click()}
+        >
+          Choose Images
+        </button>
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleFilesChange}
+          style={{ display: "none" }}
+        />
+
+        <div className="image-previews" style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+          {images.map((image, idx) => (
+            <img
+              key={idx}
+              src={URL.createObjectURL(image)}
+              alt={`preview ${idx}`}
+              style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "8px" }}
+            />
+          ))}
+        </div>
+      </div>
+
       <button type="submit" className="button">Submit</button>
     </form>
   );

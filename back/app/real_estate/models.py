@@ -16,6 +16,8 @@ class RealEstateObject(models.Model):
     area_sq_m = models.DecimalField(max_digits=10, decimal_places=2)
     rooms = models.IntegerField()
     property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES)
+    image = models.ImageField(upload_to='real_estate_images/', blank=True, null=True)  # NEW
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

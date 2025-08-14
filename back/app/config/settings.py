@@ -142,3 +142,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 3,  
 }
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = '<your-minio-access-key>'
+AWS_SECRET_ACCESS_KEY = '<your-minio-secret-key>'
+AWS_STORAGE_BUCKET_NAME = '<your-bucket-name>'
+AWS_S3_ENDPOINT_URL = 'http://<minio-host>:<port>'
+AWS_S3_REGION_NAME = 'us-east-1'  
+
