@@ -44,9 +44,9 @@ export default function ButtonGroup({ showForm, setShowForm, data, setData, setP
         <button
           className="top-right-search"
           onClick={() => {
-            setData(null)
             setShowForm(false);
             setShowFilters(true);
+            setData(null);
           }}
         >
           Search

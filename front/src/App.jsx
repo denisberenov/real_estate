@@ -87,7 +87,7 @@ export default function App() {
     if (page !== null) {
       handleSearchClick(page);
     }
-  }, [filters, page]);
+  }, [page]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
