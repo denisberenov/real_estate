@@ -93,37 +93,59 @@ export default function App() {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/real-estate/objects/', {
-        method: 'POST',
+      const data = new FormData();
+      data.append("title", formData.title);
+      data.append("description", formData.description);
+      data.append("address", formData.address);
+      data.append("city", formData.city);
+      data.append("price", formData.price);
+      data.append("area_sq_m", formData.area_sq_m);
+      data.append("rooms", formData.rooms);
+      data.append("property_type", formData.property_type);
+
+      // if you support multiple images
+      if (formData.images && formData.images.length > 0) {
+        for (let i = 0; i < formData.images.length; i++) {
+          data.append("images", formData.images[i]); 
+        }
+      }
+
+      // if (formData.images && formData.images.length > 0) {
+      //   data.append("image", formData.images[0]); // pick only the first image
+      // }
+
+      const response = await fetch("/api/real-estate/objects/", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-API-TOKEN': 'your_generated_secret_token_here',
+          "X-API-TOKEN": "your_generated_secret_token_here",
+          // ❌ don't set Content-Type, fetch will do it automatically for FormData
         },
-        body: JSON.stringify(formData),
+        body: data,
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        console.error('Error details from backend:', result);
+        console.error("Error details from backend:", result);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      console.log('Successfully created:', result);
+      console.log("Successfully created:", result);
       setShowForm(false);
       setFormData({
-        title: '',
-        description: '',
-        address: '',
-        city: '',
-        price: '',
-        area_sq_m: '',
-        rooms: '',
-        property_type: ''
+        title: "",
+        description: "",
+        address: "",
+        city: "",
+        price: "",
+        area_sq_m: "",
+        rooms: "",
+        property_type: "",
+        images: [], // reset images too
       });
     } catch (error) {
-      console.error('Error creating real estate object:', error);
-      alert('Failed to create object: ' + error.message);
+      console.error("Error creating real estate object:", error);
+      alert("Failed to create object: " + error.message);
     }
   };
 

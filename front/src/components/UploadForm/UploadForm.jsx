@@ -7,8 +7,19 @@ export default function UploadForm({ formData, setFormData, handleFormSubmit, PR
   const [images, setImages] = useState([]);
 
   const handleFilesChange = (e) => {
-    const selectedFiles = Array.from(e.target.files).slice(0, 10); // max 10 images
-    setImages(selectedFiles);
+    const selectedFiles = Array.from(e.target.files);
+    setImages((prevImages) => {
+      // Merge old + new files
+      const combined = [...prevImages, ...selectedFiles];
+      // Keep only first 10
+      return combined.slice(0, 10);
+    });
+
+    // If you also want these images in formData for submit:
+    setFormData((prev) => ({
+      ...prev,
+      images: [...(prev.images || []), ...selectedFiles].slice(0, 10),
+    }));
   };
   
   return (

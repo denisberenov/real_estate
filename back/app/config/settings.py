@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'real_estate',
     'corsheaders',
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -143,10 +144,33 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 3,  
 }
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_ACCESS_KEY_ID = '<your-minio-access-key>'
-AWS_SECRET_ACCESS_KEY = '<your-minio-secret-key>'
-AWS_STORAGE_BUCKET_NAME = '<your-bucket-name>'
-AWS_S3_ENDPOINT_URL = 'http://<minio-host>:<port>'
-AWS_S3_REGION_NAME = 'us-east-1'  
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "bucket_name": "real-estate-bucket",
+            # MinIO specifics:
+            "endpoint_url": "http://minio:9000",
+            "region_name": "us-east-1",
+            # Force path-style for MinIO (no wildcard DNS):
+            "addressing_style": "path",
+            # Ensure v4 signatures (MinIO expects this):
+            "signature_version": "s3v4",
+        },
+    },
+    "staticfiles": {  # optional if you also want static via S3
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        "OPTIONS": {
+            "bucket_name": "real-estate-bucket",
+            "endpoint_url": "http://minio:9000",
+            "region_name": "us-east-1",
+            "addressing_style": "path",
+            "signature_version": "s3v4",
+        },
+    },
+}
 
+AWS_S3_FILE_OVERWRITE = False            # optional
+AWS_DEFAULT_ACL = None                   # recommended with modern S3/MinIO
+AWS_QUERYSTRING_AUTH = False             # cleaner public URLs, if you want
+AWS_S3_URL_PROTOCOL = "http:"            # avoid https in URLs inside your LAN
