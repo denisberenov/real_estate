@@ -6,6 +6,7 @@ import ResultsList from '../ResultsList/ResultsList';
 import Pagination from '../Pagination/Pagination';
 import DetailsModal from '../DetailsModal/DetailsModal';
 import Filters from '../Filters/Filters';
+import ScrollToTopButton from "../ScrollToTopButton/ScrollToTopButton";
 
 import './Body.css';
 
@@ -79,6 +80,8 @@ export default function Body({
           )}
         </div>
       )}
+
+      <ScrollToTopButton />
 
       {selectedObject && (
         <DetailsModal
