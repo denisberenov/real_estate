@@ -1,6 +1,7 @@
 # app/serializers.py
 from rest_framework import serializers
 from .models import RealEstateObject, RealEstateImage
+from .utils.storage import get_presigned_url
 
 
 class RealEstateImageSerializer(serializers.ModelSerializer):
@@ -12,7 +13,9 @@ class RealEstateImageSerializer(serializers.ModelSerializer):
         fields = ["id", "url", "alt", "is_primary", "order", "created_at"]
 
     def get_url(self, obj):
-        return obj.image.url
+        if obj.image:
+            return get_presigned_url(obj.image.name)
+        return None
 
 
 class RealEstateObjectWriteSerializer(serializers.ModelSerializer):

@@ -54,20 +54,19 @@ class RealEstateObjectViewSet(viewsets.ModelViewSet):
         return RealEstateObjectReadSerializer
 
     def create(self, request, *args, **kwargs):
+        # Split normal fields and files
+        data = request.data.dict()
+        
         # Accept both `images` and `images[]`
-        data = request.data.copy()
-        if "images" not in data:
-            files_alt = request.FILES.getlist("images[]")
-            if files_alt:
-                data.setlist("images", files_alt)
+        images = request.FILES.getlist("images") or request.FILES.getlist("images[]")
 
-        # Optional debug
-        # print("DATA:", {k: data.getlist(k) for k in data})
-        # print("FILES keys:", list(request.FILES.keys()))
-
-        serializer = self.get_serializer(data=data)
+        # Merge files back into serializer input
+        # If your serializer has `images = serializers.ListField(child=...)`
+        # or uses a nested Image model, pass the files as part of `data`
+        serializer = self.get_serializer(data={**data, "images": images})
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
+
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 

@@ -141,36 +141,69 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 3,  
+    'PAGE_SIZE': 10,  
 }
+
+# settings.py
+
+# --- Core S3/MinIO options used by django-storages ---
+AWS_ACCESS_KEY_ID = "minioadmin"          # or from env
+AWS_SECRET_ACCESS_KEY = "minioadmin"      # or from env
+AWS_STORAGE_BUCKET_NAME = "real-estate-bucket"
+
+AWS_S3_ENDPOINT_URL = "http://minio:9000"       # service name in Docker network or real URL
+AWS_S3_REGION_NAME = "us-east-1"                # MinIO ignores region but keep it
+AWS_S3_ADDRESSING_STYLE = "path"                # critical for MinIO (no wildcard DNS)
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_URL_PROTOCOL = "http:"                   # LAN/non-SSL
+AWS_S3_VERIFY = False                           # set True if using valid TLS
+# If using http, also ensure:
+AWS_S3_USE_SSL = False
+
+# MEDIA (uploads)
+AWS_S3_CUSTOM_DOMAIN = "http://localhost:9000"
+MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/"
+# STATIC (if you want static from MinIO too)
+STATIC_URL = f"{AWS_S3_ENDPOINT_URL}/real-estate-bucket/static/"
 
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
         "OPTIONS": {
             "bucket_name": "real-estate-bucket",
-            # MinIO specifics:
-            "endpoint_url": "http://minio:9000",
-            "region_name": "us-east-1",
-            # Force path-style for MinIO (no wildcard DNS):
-            "addressing_style": "path",
-            # Ensure v4 signatures (MinIO expects this):
-            "signature_version": "s3v4",
+            # the kwargs below override the AWS_* above if present
+            "endpoint_url": AWS_S3_ENDPOINT_URL,
+            "region_name": AWS_S3_REGION_NAME,
+            "addressing_style": AWS_S3_ADDRESSING_STYLE,
+            "signature_version": AWS_S3_SIGNATURE_VERSION,
+            "access_key": AWS_ACCESS_KEY_ID,
+            "secret_key": AWS_SECRET_ACCESS_KEY,
+            "use_ssl": AWS_S3_USE_SSL,
+            "verify": AWS_S3_VERIFY,
+            "default_acl": AWS_DEFAULT_ACL,
+            "file_overwrite": AWS_S3_FILE_OVERWRITE,
+            "querystring_auth": AWS_QUERYSTRING_AUTH,
         },
     },
-    "staticfiles": {  # optional if you also want static via S3
+    "staticfiles": {
         "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
         "OPTIONS": {
             "bucket_name": "real-estate-bucket",
-            "endpoint_url": "http://minio:9000",
-            "region_name": "us-east-1",
-            "addressing_style": "path",
-            "signature_version": "s3v4",
+            "location": "static",  # keep static in a prefix
+            "endpoint_url": AWS_S3_ENDPOINT_URL,
+            "region_name": AWS_S3_REGION_NAME,
+            "addressing_style": AWS_S3_ADDRESSING_STYLE,
+            "signature_version": AWS_S3_SIGNATURE_VERSION,
+            "access_key": AWS_ACCESS_KEY_ID,
+            "secret_key": AWS_SECRET_ACCESS_KEY,
+            "use_ssl": AWS_S3_USE_SSL,
+            "verify": AWS_S3_VERIFY,
+            "default_acl": AWS_DEFAULT_ACL,
+            "file_overwrite": AWS_S3_FILE_OVERWRITE,
+            "querystring_auth": AWS_QUERYSTRING_AUTH,
         },
     },
 }
-
-AWS_S3_FILE_OVERWRITE = False            # optional
-AWS_DEFAULT_ACL = None                   # recommended with modern S3/MinIO
-AWS_QUERYSTRING_AUTH = False             # cleaner public URLs, if you want
-AWS_S3_URL_PROTOCOL = "http:"            # avoid https in URLs inside your LAN
