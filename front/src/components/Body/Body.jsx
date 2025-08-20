@@ -29,7 +29,8 @@ export default function Body({
   setFilters,
   showFilters,
   handleOpenFilters,
-  setShowFilters
+  setShowFilters,
+  loading
 }) {
   return (
     <>
@@ -51,6 +52,7 @@ export default function Body({
         handleOpenFilters={handleOpenFilters}
         showFilters={showFilters}
         setShowFilters={setShowFilters}
+        loading={loading}
       />
 
       <ErrorMessage error={error} />
@@ -64,12 +66,12 @@ export default function Body({
         />
       )}
 
-      {data && (
+      {!loading && data && (
         <div className="results-wrapper">
           {data.results && data.results.length > 0 ? (
             <>
               <ResultsList data={data} setSelectedObject={setSelectedObject} />
-              {data.count > 3 && (
+              {data.count > 9 && (
                 <Pagination page={page} setPage={setPage} data={data} />
               )}
             </>
@@ -79,6 +81,10 @@ export default function Body({
             </p>
           )}
         </div>
+      )}
+
+      {loading && (
+        <p className="loading-message">Loading results...</p>
       )}
 
       <ScrollToTopButton />

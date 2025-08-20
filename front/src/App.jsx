@@ -41,11 +41,14 @@ export default function App() {
   const [error, setError] = useState(null);
   const [selectedObject, setSelectedObject] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
   const handleOpenFilters = () => {
     setShowFilters(true);
   };
 
   const handleSearchClick = async (pageNumber) => {
+    setLoading(true);
     setShowForm(false);
 
     // Build query params from filters + page
@@ -81,6 +84,7 @@ export default function App() {
       setError(err.message);
       setData(null);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -172,6 +176,7 @@ export default function App() {
         showFilters={showFilters}
         handleOpenFilters={handleOpenFilters}
         setShowFilters={setShowFilters}
+        loading={loading}
       />
       <Footer />
     </div>

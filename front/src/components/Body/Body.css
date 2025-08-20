@@ -25,3 +25,26 @@ body.has-results .app-container {
   color: #777;
   font-size: 1.1rem;
 }
+
+.loading-message {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #3b82f6;              /* Tailwind's blue-500 */
+  text-align: center;
+  margin: 2rem 0;
+
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: rgba(59, 130, 246, 0.1); /* light blue background */
+  border: 1px solid #3b82f6;
+
+  animation: pulse 1.5s infinite;
+}
+
+/* Smooth pulsing effect */
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
