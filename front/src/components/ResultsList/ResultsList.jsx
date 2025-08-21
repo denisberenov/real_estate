@@ -8,6 +8,11 @@ export default function ResultsList({ data, setSelectedObject }) {
 
   return (
     <div className="results-list">
+      {/* 🔹 Show total results count */}
+      <h3 className="results-count">
+        {data.count} result{data.count !== 1 ? 's' : ''} found
+      </h3>
+
       {data.results.map((item) => {
         const gallery = item.images || []; // backend gives array of {url: "..."}
         const fallback = item.image ? [{ url: item.image }] : []; // legacy single field
