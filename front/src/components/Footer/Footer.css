@@ -1,10 +1,16 @@
 .footer {
+  width: 100%;              /* make it span full width */
   flex: 0 0 auto;
-  margin-top: 2rem;
   text-align: center;
   font-size: 0.9rem;
   color: #4b5563;
   font-weight: 500;
+  padding: 2rem 0;           /* increase vertical padding = more height */
+  background: #B0C4DE;
+  border-top: 1px solid #e5e7eb;
+  position: fixed;
+  left: 0;
+  bottom: 0;
 }
 
 .footer a {

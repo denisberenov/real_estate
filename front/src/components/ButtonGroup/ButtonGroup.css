@@ -2,8 +2,9 @@
   display: flex;
   gap: 50px;
   justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 40px;
+  text-align: center;
+  flex-wrap: wrap; 
+  margin-bottom: 40px; 
 }
 
 .button {
