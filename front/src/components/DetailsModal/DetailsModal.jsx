@@ -1,15 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import Lightbox from '../Lightbox/Lightbox';   // ✅ import reusable Lightbox
 import './DetailsModal.css';
 
 export default function DetailsModal({ obj, onClose }) {
+  const [fullscreenImages, setFullscreenImages] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   useEffect(() => {
+    // Save current overflow
     const prev = document.body.style.overflow;
+
+    // Lock scroll only if Lightbox not open yet
     document.body.style.overflow = 'hidden';
+
     return () => {
-      document.body.style.overflow = prev;
+      // Restore overflow only if no lightbox open
+      if (!fullscreenImages || fullscreenImages.length === 0) {
+        document.body.style.overflow = prev;
+      }
     };
-  }, []);
+  }, [fullscreenImages]);
 
   if (!obj) return null;
 
@@ -19,7 +30,8 @@ export default function DetailsModal({ obj, onClose }) {
   };
 
   const gallery = Array.isArray(obj.images) ? obj.images : [];
-  const cover = obj.image || null; // legacy single image support
+  const cover = obj.image ? [{ url: obj.image }] : []; // wrap single cover into array
+  const images = [...cover, ...gallery];
 
   return createPortal(
     <div className="details-overlay" onClick={onClose}>
@@ -27,7 +39,7 @@ export default function DetailsModal({ obj, onClose }) {
         <button className="close-button" onClick={onClose}>Close</button>
         <h1>{obj.title}</h1>
 
-        {(gallery.length > 0 || cover) && (
+        {images.length > 0 && (
           <div
             className="image-grid"
             style={{
@@ -37,19 +49,16 @@ export default function DetailsModal({ obj, onClose }) {
               margin: '12px 0 20px'
             }}
           >
-            {cover && (
+            {images.map((img, idx) => (
               <img
-                src={cover}
-                alt={`${obj.title} cover`}
-                style={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 8 }}
-              />
-            )}
-            {gallery.map((img) => (
-              <img
-                key={img.id}
+                key={img.id || idx}
                 src={img.url}
                 alt={img.alt || obj.title}
                 style={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 8 }}
+                onClick={() => {   // ✅ open lightbox
+                  setFullscreenImages(images);
+                  setCurrentIndex(idx);
+                }}
               />
             ))}
           </div>
@@ -66,6 +75,16 @@ export default function DetailsModal({ obj, onClose }) {
           <p><strong>Created At:</strong> {new Date(obj.created_at).toLocaleString()}</p>
         )}
       </div>
+
+      {/* ✅ Lightbox overlay */}
+      {fullscreenImages.length > 0 && (
+        <Lightbox
+          images={fullscreenImages}
+          index={currentIndex}
+          setIndex={setCurrentIndex}
+          onClose={() => setFullscreenImages([])}
+        />
+      )}
     </div>,
     document.body
   );

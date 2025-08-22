@@ -1,33 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import Lightbox from '../Lightbox/Lightbox';
 import './ResultsList.css';
 
 export default function ResultsList({ data, setSelectedObject }) {
-  const [fullscreenImages, setFullscreenImages] = useState([]); // list of images
-  const [currentIndex, setCurrentIndex] = useState(0); // current image index
+  const [fullscreenImages, setFullscreenImages] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Close on ESC key + navigate with arrows
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        setFullscreenImages([]);
-      } else if (e.key === 'ArrowRight') {
-        setCurrentIndex((prev) =>
-          prev + 1 < fullscreenImages.length ? prev + 1 : 0
-        );
-      } else if (e.key === 'ArrowLeft') {
-        setCurrentIndex((prev) =>
-          prev - 1 >= 0 ? prev - 1 : fullscreenImages.length - 1
-        );
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [fullscreenImages]);
-
-  // 🔹 Move early return *after* hooks
-  if (!data || !Array.isArray(data.results)) {
-    return null;
-  }
+  if (!data || !Array.isArray(data.results)) return null;
 
   return (
     <div className="results-list">
@@ -50,7 +29,6 @@ export default function ResultsList({ data, setSelectedObject }) {
                 >
                   {item.title}
                 </h2>
-
                 <p><strong>Address:</strong> {item.address}, {item.city}</p>
                 <p><strong>Price:</strong> ${Number(item.price).toLocaleString()}</p>
                 <p><strong>Area:</strong> {Number(item.area_sq_m).toLocaleString()} m²</p>
@@ -66,10 +44,7 @@ export default function ResultsList({ data, setSelectedObject }) {
                       src={img.url}
                       alt={item.title}
                       className="result-thumb"
-                      onClick={() => {
-                        setFullscreenImages(images);
-                        setCurrentIndex(idx);
-                      }}
+                      onClick={() => { setFullscreenImages(images); setCurrentIndex(idx); }}
                     />
                   ))}
                 </div>
@@ -80,41 +55,12 @@ export default function ResultsList({ data, setSelectedObject }) {
       })}
 
       {fullscreenImages.length > 0 && (
-        <div
-          className="fullscreen-overlay"
-          onClick={() => setFullscreenImages([])}
-        >
-          <button
-            className="nav-button left"
-            onClick={(e) => {
-              e.stopPropagation();
-              setCurrentIndex((prev) =>
-                prev - 1 >= 0 ? prev - 1 : fullscreenImages.length - 1
-              );
-            }}
-          >
-            ‹
-          </button>
-
-          <img
-            src={fullscreenImages[currentIndex].url}
-            alt="fullscreen view"
-            className="fullscreen-img"
-            onClick={(e) => e.stopPropagation()}
-          />
-
-          <button
-            className="nav-button right"
-            onClick={(e) => {
-              e.stopPropagation();
-              setCurrentIndex((prev) =>
-                prev + 1 < fullscreenImages.length ? prev + 1 : 0
-              );
-            }}
-          >
-            ›
-          </button>
-        </div>
+        <Lightbox
+          images={fullscreenImages}
+          index={currentIndex}
+          setIndex={setCurrentIndex}
+          onClose={() => setFullscreenImages([])}
+        />
       )}
     </div>
   );
