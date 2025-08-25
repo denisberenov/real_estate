@@ -11,42 +11,27 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
 
-  back:
-    container_name: back
-    build:
-      context: ./back
-    command: python /app/manage.py runserver 0.0.0.0:8000
-    volumes:
-      - ./back/app:/app
-    env_file:
-      - .env
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-      - minio
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
     environment:
-      - DATABASE_NAME=your_db_name
-      - DATABASE_USER=your_db_user
-      - DATABASE_PASSWORD=your_db_password
-      - DATABASE_HOST=db
-      - DATABASE_PORT=5432
-      - AWS_ACCESS_KEY_ID=minioadmin
-      - AWS_SECRET_ACCESS_KEY=minioadmin
-      - AWS_STORAGE_BUCKET_NAME=real-estate-bucket
-      - AWS_S3_ENDPOINT_URL=http://minio:9000
-      - AWS_S3_REGION_NAME=us-east-1
-
-  front:
-    container_name: front
-    build:
-      context: ./front
-      dockerfile: Dockerfile
+      RABBITMQ_DEFAULT_USER: app
+      RABBITMQ_DEFAULT_PASS: app
+      RABBITMQ_DEFAULT_VHOST: app
     ports:
-      - "3000:80"
-    depends_on:
-      - back
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
 
   minio:
     image: quay.io/minio/minio
@@ -60,18 +45,103 @@ services:
       - "9001:9001" # Web UI
     volumes:
       - minio_data:/data
+    healthcheck:
+      # MinIO exposes a native readiness endpoint
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/ready"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
 
-  mc: # MinIO client (optional helper to create buckets)
+  mc:
     image: minio/mc
     depends_on:
-      - minio
+      minio:
+        condition: service_healthy
     entrypoint: >
       /bin/sh -c "
-      sleep 5 &&
       mc alias set localminio http://minio:9000 minioadmin minioadmin &&
       mc mb localminio/real-estate-bucket || true &&
       tail -f /dev/null
       "
+
+  back:
+    container_name: back
+    build:
+      context: ./back
+    command: python /app/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./back/app:/app
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_NAME=your_db_name
+      - DATABASE_USER=your_db_user
+      - DATABASE_PASSWORD=your_db_password
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - AWS_ACCESS_KEY_ID=minioadmin
+      - AWS_SECRET_ACCESS_KEY=minioadmin
+      - AWS_STORAGE_BUCKET_NAME=real-estate-bucket
+      - AWS_S3_ENDPOINT_URL=http://minio:9000
+      - AWS_S3_REGION_NAME=us-east-1
+      - CELERY_BROKER_URL=amqp://app:app@rabbitmq:5672/app
+      - CELERY_RESULT_BACKEND=
+    depends_on:
+      db:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  celery:
+    container_name: celery
+    build:
+      context: ./back
+    command: celery -A config.celery worker -l info
+    volumes:
+      - ./back/app:/app
+    env_file:
+      - .env
+    environment:
+      - CELERY_BROKER_URL=amqp://app:app@rabbitmq:5672/app
+      - CELERY_RESULT_BACKEND=
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+
+  celery-beat:
+    container_name: celery-beat
+    build:
+      context: ./back
+    command: celery -A config.celery beat -l info
+    volumes:
+      - ./back/app:/app
+    env_file:
+      - .env
+    environment:
+      - CELERY_BROKER_URL=amqp://app:app@rabbitmq:5672/app
+      - CELERY_RESULT_BACKEND=
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+
+  front:
+    container_name: front
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      back:
+        condition: service_started
 
 volumes:
   postgres_data:

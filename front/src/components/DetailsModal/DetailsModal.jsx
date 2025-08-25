@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Lightbox from '../Lightbox/Lightbox';   // ✅ import reusable Lightbox
+import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
 import './DetailsModal.css';
 
 export default function DetailsModal({ obj, onClose }) {
   const [fullscreenImages, setFullscreenImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
-    // Save current overflow
     const prev = document.body.style.overflow;
-
-    // Lock scroll only if Lightbox not open yet
     document.body.style.overflow = 'hidden';
 
     return () => {
-      // Restore overflow only if no lightbox open
       if (!fullscreenImages || fullscreenImages.length === 0) {
         document.body.style.overflow = prev;
       }
@@ -30,7 +28,7 @@ export default function DetailsModal({ obj, onClose }) {
   };
 
   const gallery = Array.isArray(obj.images) ? obj.images : [];
-  const cover = obj.image ? [{ url: obj.image }] : []; // wrap single cover into array
+  const cover = obj.image ? [{ url: obj.image }] : [];
   const images = [...cover, ...gallery];
 
   return createPortal(
@@ -55,7 +53,7 @@ export default function DetailsModal({ obj, onClose }) {
                 src={img.url}
                 alt={img.alt || obj.title}
                 style={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 8 }}
-                onClick={() => {   // ✅ open lightbox
+                onClick={() => {
                   setFullscreenImages(images);
                   setCurrentIndex(idx);
                 }}
@@ -74,15 +72,34 @@ export default function DetailsModal({ obj, onClose }) {
         {obj.created_at && (
           <p><strong>Created At:</strong> {new Date(obj.created_at).toLocaleString()}</p>
         )}
+
+        <button 
+          className="delete-button"
+          onClick={() => setShowDeleteModal(true)}
+        >
+          Delete
+        </button>
       </div>
 
-      {/* ✅ Lightbox overlay */}
+      {/* Lightbox overlay */}
       {fullscreenImages.length > 0 && (
         <Lightbox
           images={fullscreenImages}
           index={currentIndex}
           setIndex={setCurrentIndex}
           onClose={() => setFullscreenImages([])}
+        />
+      )}
+
+      {/* Delete confirmation modal */}
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          item={obj}
+          onDelete={(id) => {
+            // Call your deletion function here
+            setShowDeleteModal(false);
+          }}
+          onCancel={() => setShowDeleteModal(false)}
         />
       )}
     </div>,

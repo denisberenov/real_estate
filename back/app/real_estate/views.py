@@ -8,6 +8,8 @@ from .serializers import (
     RealEstateObjectWriteSerializer,
     RealEstateObjectReadSerializer,
 )
+from rest_framework.decorators import action
+from .tasks import send_delete_otp  
 
 class RealEstateObjectViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
@@ -84,3 +86,37 @@ class RealEstateObjectViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=["post"])
+    def request_delete(self, request, pk=None):
+        """Send OTP to the email address of the object owner."""
+        obj = self.get_object()
+
+        # For now let's assume `obj` has a field `email`
+        if not obj.email:
+            return Response({"error": "No email associated"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Generate OTP (e.g. 6-digit random)
+        import random
+        otp = str(random.randint(100000, 999999))
+
+        # Store OTP temporarily (DB, cache, Redis, etc.)
+        # simplest: attach to obj for now
+        obj.deletion_otp = otp
+        obj.save(update_fields=["deletion_otp"])
+
+        # Send OTP via Celery
+        send_delete_otp.delay(obj.email, otp)
+
+        return Response({"message": f"OTP sent to {obj.email}"}, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=["post"])
+    def confirm_delete(self, request, pk=None):
+        obj = self.get_object()
+        otp = request.data.get("otp")
+
+        if otp != obj.deletion_otp:
+            return Response({"error": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+
+        obj.delete()
+        return Response({"success": True}, status=status.HTTP_200_OK)

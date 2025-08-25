@@ -5,7 +5,7 @@
   justify-content: center; /* horizontal */
   align-items: center;     /* vertical */
   min-height: 100vh;       /* take full screen height */
-  padding: 40px 20px 150px;
+  padding: 40px 20px 200px;
   box-sizing: border-box;
   min-height: 100vh;
   background: linear-gradient(135deg, #e0eafc, #cfdef3);

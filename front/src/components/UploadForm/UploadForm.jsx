@@ -79,6 +79,18 @@ export default function UploadForm({ formData, setFormData, handleFormSubmit, PR
         ))}
       </select>
 
+      {/* Email field */}
+      <input
+        type="email"
+        placeholder="Your email (used to verify ownership for deletion)"
+        value={formData.email}
+        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        required
+      />
+      <small style={{ display: 'block', marginBottom: '10px', color: '#555' }}>
+        This email will be used to send a verification code (OTP) if you want to delete your listing.
+      </small>
+
       <div className="file-input-wrapper">
         <button
           type="button"

@@ -106,6 +106,7 @@ export default function App() {
       data.append("area_sq_m", formData.area_sq_m);
       data.append("rooms", formData.rooms);
       data.append("property_type", formData.property_type);
+      data.append("email", formData.email);
 
       // if you support multiple images
       if (formData.images && formData.images.length > 0) {

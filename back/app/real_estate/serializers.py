@@ -35,6 +35,7 @@ class RealEstateObjectWriteSerializer(serializers.ModelSerializer):
         fields = [
             "id", "title", "description", "address", "city",
             "price", "area_sq_m", "rooms", "property_type",
+            "email",
             "image",        # optional cover image (your original field)
             "images",       # NEW: list of additional images to attach
             "created_at",
@@ -83,10 +84,18 @@ class RealEstateObjectReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = RealEstateObject
         fields = [
-            "id", "title", "description", "address", "city",
-            "price", "area_sq_m", "rooms", "property_type",
-            "image",        # cover image (serialized as URL automatically)
-            "images",       # related gallery
+            "id",
+            "title",
+            "description",
+            "address",
+            "city",
+            "price",
+            "area_sq_m",
+            "rooms",
+            "property_type",
+            "email",       # ✅ include this
+            "image",       # cover image
+            "images",      # related gallery
             "created_at",
         ]
         read_only_fields = fields
