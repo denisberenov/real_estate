@@ -136,6 +136,10 @@ export default function App() {
       }
 
       console.log("Successfully created:", result);
+      console.log(getCoordinatesOSM(formData.address))
+
+      handleSearchClick(1);
+
       setShowForm(false);
       setFormData({
         title: "",
@@ -151,6 +155,20 @@ export default function App() {
     } catch (error) {
       console.error("Error creating real estate object:", error);
       alert("Failed to create object: " + error.message);
+    }
+  };
+
+  const getCoordinatesOSM = async (address) => {
+    const encodedAddress = encodeURIComponent(address);
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodedAddress}&format=json`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.length > 0) {
+      return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+    } else {
+      throw new Error("Address not found");
     }
   };
 

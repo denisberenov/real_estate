@@ -3,7 +3,12 @@ import { useState } from "react";
 
 import './UploadForm.css';
 
-export default function UploadForm({ formData, setFormData, handleFormSubmit, PROPERTY_TYPES }) {
+export default function UploadForm({ 
+  formData, 
+  setFormData, 
+  handleFormSubmit, 
+  PROPERTY_TYPES 
+}) {
   const [images, setImages] = useState([]);
 
   const handleFilesChange = (e) => {
@@ -120,7 +125,12 @@ export default function UploadForm({ formData, setFormData, handleFormSubmit, PR
         </div>
       </div>
 
-      <button type="submit" className="button">Submit</button>
+      <button
+        type="submit"
+        className="button"
+      >
+        Submit
+      </button>
     </form>
   );
 }

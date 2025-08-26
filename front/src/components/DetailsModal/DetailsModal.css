@@ -12,13 +12,40 @@
 }
 
 .details-box {
+  position: relative; /* обязательно */
   background: #E0FFFF;
-  padding: 20px;
+  padding: 16px;
   max-width: 600px;
   width: 90%;
   border-radius: 10px;
   max-height: 90vh;
   overflow-y: auto;
+}
+
+.details-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #E0FFFF;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  border-bottom: 1px solid #ccc;
+}
+
+.details-content {
+  padding: 40px 16px 16px;  /* сверху 40px, по бокам 16px, снизу 16px */
+  overflow-y: auto;
+  max-height: calc(90vh - 60px);
+}
+
+.details-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .close-button {
@@ -28,7 +55,15 @@
   padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
-  float: right;
+  transition: background 0.2s ease;
+}
+
+.close-button:hover {
+  background: #e04848; /* чуть темнее */
+}
+
+.close-button:active {
+  background: #c93030;
 }
 
 .delete-button {
