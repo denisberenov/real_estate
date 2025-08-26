@@ -93,6 +93,7 @@ export default function Body({
         <DetailsModal
           obj={selectedObject}
           onClose={() => setSelectedObject(null)}
+          onSearchClick={handleSearchClick}
         />
       )}
     </>

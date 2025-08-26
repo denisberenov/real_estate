@@ -4,7 +4,7 @@ import Lightbox from '../Lightbox/Lightbox';   // ✅ import reusable Lightbox
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
 import './DetailsModal.css';
 
-export default function DetailsModal({ obj, onClose }) {
+export default function DetailsModal({ obj, onClose, onSearchClick }) {
   const [fullscreenImages, setFullscreenImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -95,11 +95,13 @@ export default function DetailsModal({ obj, onClose }) {
       {showDeleteModal && (
         <DeleteConfirmationModal
           item={obj}
-          onDelete={(id) => {
+          onCancel={() => setShowDeleteModal(false)}
+          onSearchClick={onSearchClick}
+          onDeleteConfirmed={(id) => {
             // Call your deletion function here
             setShowDeleteModal(false);
+            onClose?.(); // optional: close details after delete
           }}
-          onCancel={() => setShowDeleteModal(false)}
         />
       )}
     </div>,

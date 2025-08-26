@@ -1,0 +1,123 @@
+/* Apply box-sizing globally to prevent width/padding overflow */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Backdrop overlay */
+.otp-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+/* Modal container */
+.otp-modal {
+  background: #fff;
+  padding: 24px 28px;
+  border-radius: 12px;
+  max-width: 420px;
+  width: 100%;
+  text-align: left; /* align content consistently */
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.otp-modal h2 {
+  margin-bottom: 12px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.otp-modal p {
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  color: #555;
+}
+
+/* Error message */
+.otp-error {
+  color: #d93025;
+  margin-top: 6px;
+  font-size: 0.9rem;
+}
+
+/* OTP input */
+.otp-input {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 8px 0 16px;
+  outline: none;
+  transition: border 0.2s ease-in-out;
+}
+
+.otp-input:focus {
+  border-color: #0077ff;
+}
+
+/* Buttons */
+.otp-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.otp-delete-btn,
+.otp-cancel-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.otp-delete-btn {
+  background-color: #e63946;
+  color: white;
+}
+
+.otp-delete-btn:hover:not(:disabled) {
+  background-color: #d62828;
+}
+
+.otp-cancel-btn {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.otp-cancel-btn:hover:not(:disabled) {
+  background-color: #ddd;
+}
+
+.otp-delete-btn:disabled,
+.otp-cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
