@@ -33,7 +33,8 @@ class RealEstateObjectWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = RealEstateObject
         fields = [
-            "id", "title", "description", "address", "city",
+            "id", "title", "description", "address", "latitude",
+            "longitude", "city",
             "price", "area_sq_m", "rooms", "property_type",
             "email",
             "image",        # optional cover image (your original field)
@@ -88,6 +89,8 @@ class RealEstateObjectReadSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "address",
+            "latitude",
+            "longitude",
             "city",
             "price",
             "area_sq_m",

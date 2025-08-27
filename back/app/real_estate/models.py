@@ -21,6 +21,8 @@ class RealEstateObject(models.Model):
     description = models.TextField()
     address = models.CharField(max_length=512)
     city = models.CharField(max_length=100)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
     price = models.DecimalField(max_digits=12, decimal_places=2)
     area_sq_m = models.DecimalField(max_digits=10, decimal_places=2)
     rooms = models.IntegerField()

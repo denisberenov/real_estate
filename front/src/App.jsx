@@ -97,33 +97,34 @@ export default function App() {
     e.preventDefault();
 
     try {
+      const coordinates = await getCoordinatesOSM(
+        `${formData.address}, ${formData.city}, Україна`
+      );
+      console.log("Resolved coordinates:", coordinates);
+
       const data = new FormData();
       data.append("title", formData.title);
       data.append("description", formData.description);
       data.append("address", formData.address);
       data.append("city", formData.city);
+      data.append("latitude", coordinates.lat);
+      data.append("longitude", coordinates.lng);
       data.append("price", formData.price);
       data.append("area_sq_m", formData.area_sq_m);
       data.append("rooms", formData.rooms);
       data.append("property_type", formData.property_type);
       data.append("email", formData.email);
 
-      // if you support multiple images
       if (formData.images && formData.images.length > 0) {
         for (let i = 0; i < formData.images.length; i++) {
-          data.append("images", formData.images[i]); 
+          data.append("images", formData.images[i]);
         }
       }
-
-      // if (formData.images && formData.images.length > 0) {
-      //   data.append("image", formData.images[0]); // pick only the first image
-      // }
 
       const response = await fetch("/api/real-estate/objects/", {
         method: "POST",
         headers: {
           "X-API-TOKEN": "your_generated_secret_token_here",
-          // ❌ don't set Content-Type, fetch will do it automatically for FormData
         },
         body: data,
       });
@@ -136,7 +137,6 @@ export default function App() {
       }
 
       console.log("Successfully created:", result);
-      console.log(getCoordinatesOSM(formData.address))
 
       handleSearchClick(1);
 
@@ -150,7 +150,7 @@ export default function App() {
         area_sq_m: "",
         rooms: "",
         property_type: "",
-        images: [], // reset images too
+        images: [],
       });
     } catch (error) {
       console.error("Error creating real estate object:", error);
@@ -161,7 +161,7 @@ export default function App() {
   const getCoordinatesOSM = async (address) => {
     const encodedAddress = encodeURIComponent(address);
     const url = `https://nominatim.openstreetmap.org/search?q=${encodedAddress}&format=json`;
-
+    
     const response = await fetch(url);
     const data = await response.json();
 

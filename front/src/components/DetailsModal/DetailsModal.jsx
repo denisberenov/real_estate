@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import Lightbox from '../Lightbox/Lightbox';   // ✅ import reusable Lightbox
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
 import './DetailsModal.css';
+import ObjectMap from '../ObjectMap/ObjectMap';
 
 export default function DetailsModal({ obj, onClose, onSearchClick }) {
   const [fullscreenImages, setFullscreenImages] = useState([]);
@@ -74,6 +75,13 @@ export default function DetailsModal({ obj, onClose, onSearchClick }) {
           {obj.created_at && (
             <p><strong>Created At:</strong> {new Date(obj.created_at).toLocaleString()}</p>
           )}
+          <p><strong>Latitude:</strong> {obj.latitude}</p>
+          <p><strong>Longitude:</strong> {obj.longitude}</p>
+          <ObjectMap
+            lat={parseFloat(obj.latitude)}
+            lng={parseFloat(obj.longitude)}
+            title={obj.title}
+          />
 
           <button 
             className="delete-button"
