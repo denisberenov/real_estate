@@ -4,11 +4,13 @@ import Lightbox from '../Lightbox/Lightbox';   // ✅ import reusable Lightbox
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
 import './DetailsModal.css';
 import ObjectMap from '../ObjectMap/ObjectMap';
+import ObjectSmallMap from '../ObjectMap/ObjectSmallMap';
 
 export default function DetailsModal({ obj, onClose, onSearchClick }) {
   const [fullscreenImages, setFullscreenImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showFullMap, setShowFullMap] = useState(false);
 
   useEffect(() => {
     const prev = document.body.style.overflow;
@@ -77,11 +79,39 @@ export default function DetailsModal({ obj, onClose, onSearchClick }) {
           )}
           <p><strong>Latitude:</strong> {obj.latitude}</p>
           <p><strong>Longitude:</strong> {obj.longitude}</p>
-          <ObjectMap
-            lat={parseFloat(obj.latitude)}
-            lng={parseFloat(obj.longitude)}
-            title={obj.title}
-          />
+          
+          <div 
+            onClick={() => setShowFullMap(true)} 
+            style={{ cursor: 'pointer' }}>
+            <ObjectSmallMap
+              lat={parseFloat(obj.latitude)}
+              lng={parseFloat(obj.longitude)}
+              title={obj.title}
+            />
+          </div>
+
+          {showFullMap && createPortal(
+            <div 
+              className="map-fullscreen-overlay"
+              onClick={() => setShowFullMap(false)}
+            >
+              <div 
+                className="map-fullscreen-box"
+                onClick={(e) => e.stopPropagation()} // prevent closing when clicking map
+              >
+                <ObjectMap
+                  className="object-map"
+                  lat={parseFloat(obj.latitude)}
+                  lng={parseFloat(obj.longitude)}
+                  title={obj.title}
+                />
+                <button className="close-button" onClick={() => setShowFullMap(false)}>
+                  Close Map
+                </button>
+              </div>
+            </div>,
+            document.body
+          )}
 
           <button 
             className="delete-button"

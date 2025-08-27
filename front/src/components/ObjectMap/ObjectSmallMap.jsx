@@ -10,14 +10,14 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
-const ObjectMap = ({ lat, lng, title }) => {
+const ObjectSmallMap = ({ lat, lng, title }) => {
   if (!lat || !lng) return <p>No coordinates available</p>;
 
   return (
     <MapContainer
       center={[lat, lng]}
       zoom={15}
-      style={{ height: "90vh", width: "100%", borderRadius: "8px" }}
+      style={{ height: "300px", width: "100%", borderRadius: "8px" }}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -30,4 +30,4 @@ const ObjectMap = ({ lat, lng, title }) => {
   );
 };
 
-export default ObjectMap;
+export default ObjectSmallMap;
