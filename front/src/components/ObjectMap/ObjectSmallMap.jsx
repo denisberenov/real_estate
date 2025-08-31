@@ -18,6 +18,7 @@ const ObjectSmallMap = ({ lat, lng, title }) => {
       center={[lat, lng]}
       zoom={15}
       style={{ height: "300px", width: "100%", borderRadius: "8px" }}
+      scrollWheelZoom={false}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
