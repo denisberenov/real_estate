@@ -36,6 +36,7 @@ export default function App() {
   });
 
   const [data, setData] = useState(null);
+  const [fullData, setfullData] = useState([]);
   const [page, setPage] = useState(null);
 
   const [error, setError] = useState(null);
@@ -45,6 +46,35 @@ export default function App() {
 
   const handleOpenFilters = () => {
     setShowFilters(true);
+  };
+
+  const fetchAllObjects = async () => {
+    setLoading(true);
+    setShowForm(false);
+
+    let allObjects = [];
+    let page = 1;
+    let totalPages = 1;
+
+    try {
+      do {
+        await handleSearchClick(page); // <-- reuse your function
+        const result = data;
+        allObjects = allObjects.concat(result.results || []);
+        console.log(allObjects);
+        const pageSize = 10; // or whatever your API uses
+        const totalPages = Math.ceil(result.count / pageSize);
+        page += 1;
+      } while (page <= totalPages);
+
+      setfullData(allObjects);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+      setfullData([]);
+    }
+
+    setLoading(false);
   };
 
   const handleSearchClick = async (pageNumber) => {
@@ -196,6 +226,8 @@ export default function App() {
         handleOpenFilters={handleOpenFilters}
         setShowFilters={setShowFilters}
         loading={loading}
+        fullData={fullData}
+        fetchAllObjects={fetchAllObjects}
       />
       <Footer />
     </div>

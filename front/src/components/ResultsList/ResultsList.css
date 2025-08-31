@@ -78,11 +78,46 @@
 .results-count {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #374151; /* neutral dark gray */
-  margin: 0 0 1rem 0; /* space below */
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #e5e7eb; /* subtle divider */
-  text-align: left; /* align with list */
+  color: #374151;
+  margin: 0;       /* убираем отступы снизу */
+  padding: 0;      /* убираем padding */
+  border: none;    /* убираем border отсюда */
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem; /* общий отступ снизу */
+  border-bottom: 1px solid #e5e7eb; /* линия для всего блока */
+  padding-bottom: 0.5rem;
+  position: relative;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 0.5rem;
+  right: 0;
+}
+
+.toggle-btn {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background: #f5f5f5;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.toggle-btn:hover {
+  background: #e6e6e6;
+}
+
+.toggle-btn.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
 }
 
 /* responsive: stack vertically on small screens */

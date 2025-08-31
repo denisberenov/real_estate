@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import ButtonGroup from '../ButtonGroup/ButtonGroup';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import UploadForm from '../UploadForm/UploadForm';
@@ -7,6 +7,7 @@ import Pagination from '../Pagination/Pagination';
 import DetailsModal from '../DetailsModal/DetailsModal';
 import Filters from '../Filters/Filters';
 import ScrollToTopButton from "../ScrollToTopButton/ScrollToTopButton";
+import ObjectResultsMap from '../ObjectMap/ObjectResultsMap';
 
 import './Body.css';
 
@@ -30,8 +31,13 @@ export default function Body({
   showFilters,
   handleOpenFilters,
   setShowFilters,
-  loading
+  loading,
+  fullData,
+  fetchAllObjects
 }) {
+
+  const [view, setView] = useState("list");
+
   return (
     <>
       {showFilters && !showForm && !data && (
@@ -70,8 +76,14 @@ export default function Body({
         <div className="results-wrapper">
           {data.results && data.results.length > 0 ? (
             <>
-              <ResultsList data={data} setSelectedObject={setSelectedObject} />
-              {data.count > 9 && (
+              <ResultsList 
+                data={data} 
+                setSelectedObject={setSelectedObject} 
+                view={view}
+                setView={setView}
+                fetchAllObjects={fetchAllObjects}
+              />
+              {view === "list" && data.count > 9 && (
                 <Pagination page={page} setPage={setPage} data={data} />
               )}
             </>
@@ -81,6 +93,10 @@ export default function Body({
             </p>
           )}
         </div>
+      )}
+
+      {view === "map" && (
+        <ObjectResultsMap items={fullData} />
       )}
 
       {loading && (
