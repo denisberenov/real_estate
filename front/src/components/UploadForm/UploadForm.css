@@ -1,29 +1,54 @@
 .upload-form {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  max-width: 400px;
-  margin: 20px auto;
+  gap: 16px;
 }
 
-.upload-form input, 
+/* Wrapper for centering */
+.form-wrapper {
+  display: flex;
+  justify-content: center;   /* center horizontally */
+  align-items: center;       /* center vertically */
+  min-height: 80vh;         /* full viewport height */
+  padding: 20px;             /* avoid sticking to edges on small screens */
+  box-sizing: border-box;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.upload-form input,
 .upload-form select,
 .upload-form textarea {
   padding: 10px;
   font-size: 16px;
   border-radius: 8px;
   border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.upload-form textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
 .upload-form .button {
-  margin-top: 10px;
+  margin-top: 20px;
+  align-self: center;
+  padding: 10px 40px;
+  font-size: 18px;
+  border-radius: 10px;
 }
 
-.upload-form .file-input-wrapper {
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
+.file-input-wrapper {
+  grid-column: span 2; /* make file upload stretch full width */
 }
 
 .choose-image-button {
@@ -52,13 +77,29 @@
   transform: translateY(-2px) scale(0.97);
 }
 
-/* hide real input */
-.upload-form .file-input-wrapper input[type="file"] {
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
+.submit-button {
+  background: #22c55e; /* green-500 */
+  border: none;
+  border-radius: 12px;
+  padding: 18px 48px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.3rem;
   cursor: pointer;
-  width: 100%;
-  height: 100%;
+  min-width: 150px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 15px rgba(34, 197, 94, 0.3);
+}
+
+.submit-button:hover {
+  background: #16a34a; /* green-600 */
+  box-shadow: 0 12px 25px rgba(22, 163, 74, 0.5);
+  transform: translateY(-4px) scale(1.05);
+}
+
+.submit-button:active {
+  background: #15803d; /* green-700 */
+  box-shadow: 0 6px 12px rgba(21, 128, 61, 0.3);
+  transform: translateY(-2px) scale(0.97);
 }
