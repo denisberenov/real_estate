@@ -1,33 +1,82 @@
 .filters-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  max-width: 400px;
-  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* two columns */
+  gap: 16px;
+  max-width: 800px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-top: 70px;
+  margin-bottom: 0px;
 }
 
 .filters-container label {
   display: flex;
   flex-direction: column;
   font-weight: 600;
-  font-size: 14px;
-  color: #333;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+/* Make certain fields span across both columns */
+.filters-container label.full-width {
+  grid-column: span 2;
 }
 
 .filters-container input,
 .filters-container select {
-  padding: 10px;
-  font-size: 16px;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
-  border: 1px solid #ccc;
-  margin-top: 4px;
-  transition: border-color 0.3s ease;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .filters-container input:focus,
 .filters-container select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
   outline: none;
-  border-color: #007bff; /* or your brand color */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.search-button {
+  grid-column: 1 / -1;     /* span both columns */
+  justify-self: stretch;    /* stretch inside the grid cell */
+  width: 100%;
+  display: block;
+  background: #22c55e;
+  border: none;
+  border-radius: 12px;
+  padding: 18px 20px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.2rem;
+  box-shadow: 0 8px 15px rgba(34,197,94,0.3);
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.search-button:hover {
+  background: #16a34a; /* green-600 */
+  box-shadow: 0 12px 25px rgba(22, 163, 74, 0.5);
+  transform: translateY(-4px) scale(1.05);
+}
+
+.search-button:active {
+  background: #15803d; /* green-700 */
+  box-shadow: 0 6px 12px rgba(21, 128, 61, 0.3);
+  transform: translateY(-2px) scale(0.97);
+}
+
+/* Mobile: collapse into one column */
+@media (max-width: 640px) {
+  .filters-container {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-container label.full-width {
+    grid-column: span 1;
+  }
 }

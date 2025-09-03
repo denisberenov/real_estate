@@ -1,7 +1,7 @@
 import React from 'react';
 import './Header.css';
 
-export default function Header({ data, showForm }) {
+export default function Header({ data, showForm, showFilters }) {
   const handleClick = () => {
     if (data || showForm) {
       window.location.reload(); // refresh the page
@@ -11,7 +11,7 @@ export default function Header({ data, showForm }) {
   return (
     <header
       className={
-        !data && !showForm
+        !showFilters && !data && !showForm
           ? "header"
           : "top-right-header"
       }

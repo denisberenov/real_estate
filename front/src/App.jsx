@@ -204,7 +204,11 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <Header data={data} showForm={showForm} />
+      <Header 
+        data={data} 
+        showForm={showForm} 
+        showFilters={showFilters}
+      />
       <Body
         showForm={showForm}
         setShowForm={setShowForm}

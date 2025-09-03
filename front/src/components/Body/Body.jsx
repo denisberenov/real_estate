@@ -45,6 +45,10 @@ export default function Body({
           filters={filters}
           setFilters={setFilters}
           propertyTypes={PROPERTY_TYPES}
+          setShowFilters={setShowFilters}
+          setShowForm={setShowForm}
+          setPage={setPage}
+          handleSearchClick={handleSearchClick}
         />
       )}
 
@@ -95,7 +99,7 @@ export default function Body({
         </div>
       )}
 
-      {view === "map" && (
+      {!loading && data && view === "map" && (
         <ObjectResultsMap items={fullData} />
       )}
 

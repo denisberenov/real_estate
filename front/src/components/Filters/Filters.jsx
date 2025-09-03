@@ -1,18 +1,26 @@
 import React from 'react';
-
 import './Filters.css';
 
-export default function Filters({ filters, setFilters, propertyTypes }) {
+export default function Filters({ 
+    filters, 
+    setFilters, 
+    propertyTypes,
+    setShowFilters,
+    setShowForm,
+    showFilters,
+    setPage,
+    handleSearchClick
+}) {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
   return (
-    <div className="filters-container">
+    <form className="filters-container">
       <label>
         City:
         <input
@@ -25,11 +33,23 @@ export default function Filters({ filters, setFilters, propertyTypes }) {
       </label>
 
       <label>
+        Price (min):
+        <input
+          type="number"
+          name="price_min"
+          value={filters.price_min || ''}
+          onChange={handleChange}
+          placeholder="Min price"
+          min="0"
+        />
+      </label>
+
+      <label>
         Price (max):
         <input
           type="number"
-          name="price"
-          value={filters.price || ''}
+          name="price_max"
+          value={filters.price_max || ''}
           onChange={handleChange}
           placeholder="Max price"
           min="0"
@@ -40,10 +60,22 @@ export default function Filters({ filters, setFilters, propertyTypes }) {
         Area (min sq m):
         <input
           type="number"
-          name="area"
-          value={filters.area || ''}
+          name="area_min"
+          value={filters.area_min || ''}
           onChange={handleChange}
           placeholder="Min area"
+          min="0"
+        />
+      </label>
+
+      <label>
+        Area (max sq m):
+        <input
+          type="number"
+          name="area_max"
+          value={filters.area_max || ''}
+          onChange={handleChange}
+          placeholder="Max area"
           min="0"
         />
       </label>
@@ -52,15 +84,15 @@ export default function Filters({ filters, setFilters, propertyTypes }) {
         Rooms (min):
         <input
           type="number"
-          name="rooms"
-          value={filters.rooms || ''}
+          name="rooms_min"
+          value={filters.rooms_min || ''}
           onChange={handleChange}
           placeholder="Min rooms"
           min="0"
         />
       </label>
 
-      <label>
+      <label className="full-width">
         Property Type:
         <select
           name="property_type"
@@ -75,6 +107,17 @@ export default function Filters({ filters, setFilters, propertyTypes }) {
           ))}
         </select>
       </label>
-    </div>
+
+      <button 
+        className="search-button"
+        onClick={() => {
+            setShowFilters(false);
+            setPage(1);
+            handleSearchClick(1);
+          }}
+      >
+        Search
+      </button>
+    </form>
   );
 }

@@ -15,7 +15,7 @@ export default function ButtonGroup({
   }) {
   return (
     <div className="button-container">
-      {!loading && !showForm && !data && (
+      {!loading && !showForm && !data && !showFilters && (
         <button
           className="button"
           onClick={() => {
@@ -27,26 +27,18 @@ export default function ButtonGroup({
           Upload
         </button>
       )}
-      {!loading && !data && (
+      {!loading && !data && !showFilters && !showForm && (
         <button
-          className={showForm ? "top-right-search" : "button"}
+          className={"button"}
           onClick={() => {
-            if (!showFilters) {
-              // First click → show filters, no search
-              setShowForm(false);
-              setShowFilters(true);
-            } else {
-              // Second click → hide filters and search
-              setShowFilters(false);
-              setPage(1);
-              handleSearchClick(1);
-            }
+            setShowForm(false);
+            setShowFilters(true);
           }}
         >
           Search
         </button>
       )}
-      {data && (
+      {(data || showForm) && (
         <button
           className="top-right-search"
           onClick={() => {
@@ -58,7 +50,7 @@ export default function ButtonGroup({
           Search
         </button>
       )}
-      {data && !showForm && (
+      {!showForm && (showFilters || data) && (
         <button
           className="top-right-upload"
           onClick={() => {
