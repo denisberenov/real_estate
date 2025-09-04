@@ -17,6 +17,7 @@ export default function Body({
   data,
   setData,
   error,
+  setError,
   formData,
   setFormData,
   handleFormSubmit,
@@ -63,6 +64,7 @@ export default function Body({
         showFilters={showFilters}
         setShowFilters={setShowFilters}
         loading={loading}
+        setError={setError}
       />
 
       <ErrorMessage error={error} />

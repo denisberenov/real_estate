@@ -61,14 +61,20 @@ export default function App() {
         await handleSearchClick(page); // <-- reuse your function
         const result = data;
         allObjects = allObjects.concat(result.results || []);
-        console.log(allObjects);
         const pageSize = 10; // or whatever your API uses
-        const totalPages = Math.ceil(result.count / pageSize);
+        totalPages = Math.ceil(result.count / pageSize);
+        console.log(`total pages: ${totalPages}`);
         page += 1;
       } while (page <= totalPages);
-
+      
       setfullData(allObjects);
       setError(null);
+
+      const validItems = (allObjects || []).filter(
+        (item) =>
+          !isNaN(parseFloat(item.latitude)) && !isNaN(parseFloat(item.longitude))
+      );
+      console.log(`validItems: ${validItems}`);
     } catch (err) {
       setError(err.message);
       setfullData([]);
@@ -216,6 +222,7 @@ export default function App() {
         setData={setData}
         handleSearchClick={handleSearchClick}
         error={error}
+        setError={setError}
         formData={formData}
         setFormData={setFormData}
         handleFormSubmit={handleFormSubmit}

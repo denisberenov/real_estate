@@ -14,7 +14,7 @@ L.Icon.Default.mergeOptions({
 
 export default function ObjectResultsMap({ items, onSearchClick }) {
   const [selectedObj, setSelectedObj] = useState(null);
-
+  
   // фильтруем только валидные точки
   const validItems = (items || []).filter(
     (item) =>

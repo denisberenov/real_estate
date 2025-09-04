@@ -7,8 +7,7 @@ export default function ButtonGroup({
     setShowForm, 
     data, 
     setData, 
-    setPage, 
-    handleSearchClick, 
+    setError,
     showFilters, 
     setShowFilters,
     loading
@@ -19,6 +18,7 @@ export default function ButtonGroup({
         <button
           className="button"
           onClick={() => {
+            setError(null);
             setShowFilters(false);
             setShowForm(true);
             setData(null);
@@ -31,6 +31,7 @@ export default function ButtonGroup({
         <button
           className={"button"}
           onClick={() => {
+            setError(null);
             setShowForm(false);
             setShowFilters(true);
           }}
@@ -42,6 +43,7 @@ export default function ButtonGroup({
         <button
           className="top-right-search"
           onClick={() => {
+            setError(null);
             setShowForm(false);
             setShowFilters(true);
             setData(null);
@@ -54,6 +56,7 @@ export default function ButtonGroup({
         <button
           className="top-right-upload"
           onClick={() => {
+            setError(null);
             setShowForm(true);
             setData(null);
             setShowFilters(false);
