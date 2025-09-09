@@ -88,6 +88,8 @@ export default function Body({
                 view={view}
                 setView={setView}
                 fetchAllObjects={fetchAllObjects}
+                setPage={setPage}
+                handleSearchClick={handleSearchClick}
               />
               {view === "list" && data.count > 9 && (
                 <Pagination page={page} setPage={setPage} data={data} />

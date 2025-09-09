@@ -2,7 +2,15 @@ import React, { useState } from 'react';
 import Lightbox from '../Lightbox/Lightbox';
 import './ResultsList.css';
 
-export default function ResultsList({ data, setSelectedObject, view, setView, fetchAllObjects }) {
+export default function ResultsList({ 
+  data, 
+  setSelectedObject, 
+  view, 
+  setView, 
+  fetchAllObjects,
+  setPage,
+  handleSearchClick
+}) {
   const [fullscreenImages, setFullscreenImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -18,7 +26,11 @@ export default function ResultsList({ data, setSelectedObject, view, setView, fe
         <div className="view-toggle">
           <button
             className={`toggle-btn ${view === "list" ? "active" : ""}`}
-            onClick={() => setView("list")}
+            onClick={() => {
+              setView("list");
+              setPage(1);
+              handleSearchClick(1);
+            }}
           >
             List
           </button>
@@ -26,6 +38,7 @@ export default function ResultsList({ data, setSelectedObject, view, setView, fe
             className={`toggle-btn ${view === "map" ? "active" : ""}`}
             onClick={() => {
               setView("map"); 
+              setPage(1);
               fetchAllObjects();
             }}
           >

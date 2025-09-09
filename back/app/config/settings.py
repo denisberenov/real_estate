@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,15 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-mzas$r&=!2!voyup_hmkz!(k1+d$59^rh%2f=ia6(op2e%%vnr'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '0.0.0.0',
-    'localhost',
-]
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 
 # Application definition
@@ -80,16 +77,15 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-import os
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME', 'your_db_name'),
-        'USER': os.getenv('DATABASE_USER', 'your_db_user'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'your_db_password'),
-        'HOST': os.getenv('DATABASE_HOST', 'db'),  
-        'PORT': os.getenv('DATABASE_PORT', '5432'),
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),  
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
 
@@ -150,11 +146,11 @@ REST_FRAMEWORK = {
 # settings.py
 
 # --- Core S3/MinIO options used by django-storages ---
-AWS_ACCESS_KEY_ID = "minioadmin"          # or from env
-AWS_SECRET_ACCESS_KEY = "minioadmin"      # or from env
-AWS_STORAGE_BUCKET_NAME = "real-estate-bucket"
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")         
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")      
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")   
 
-AWS_S3_ENDPOINT_URL = "http://minio:9000"       # service name in Docker network or real URL
+AWS_S3_ENDPOINT_URL = os.getenv("AWS_S3_ENDPOINT_URL")       # service name in Docker network or real URL
 AWS_S3_REGION_NAME = "us-east-1"                # MinIO ignores region but keep it
 AWS_S3_ADDRESSING_STYLE = "path"                # critical for MinIO (no wildcard DNS)
 AWS_S3_SIGNATURE_VERSION = "s3v4"
@@ -167,7 +163,7 @@ AWS_S3_VERIFY = False                           # set True if using valid TLS
 AWS_S3_USE_SSL = False
 
 # MEDIA (uploads)
-AWS_S3_CUSTOM_DOMAIN = "http://localhost:9000"
+AWS_S3_CUSTOM_DOMAIN = os.getenv("AWS_S3_CUSTOM_DOMAIN")
 MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/"
 # STATIC (if you want static from MinIO too)
 STATIC_URL = f"{AWS_S3_ENDPOINT_URL}/real-estate-bucket/static/"
@@ -211,12 +207,12 @@ STORAGES = {
     },
 }
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS").split(",")
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "denisberenov@gmail.com"
-EMAIL_HOST_PASSWORD = "umlj umoq hivu ugyt"
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_USE_TLS = bool(os.getenv("EMAIL_USE_TLS"))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

@@ -17,7 +17,7 @@ const DeleteConfirmationModal = ({ item, onCancel, onDeleteConfirmed, onSearchCl
             method: "POST",
             headers: {
             "Content-Type": "application/json",
-            "X-API-TOKEN": "your_generated_secret_token_here",
+            "X-API-TOKEN": process.env.API_SECRET_TOKEN,
             },
             body: JSON.stringify({ id }),
         }

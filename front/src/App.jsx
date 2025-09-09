@@ -96,13 +96,13 @@ export default function App() {
         params.append(key, value);
       }
     });
-
+    console.log(process.env.API_SECRET_TOKEN);
     try {
       const response = await fetch(`/api/real-estate/objects/?${params.toString()}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-TOKEN': 'your_generated_secret_token_here',
+          'X-API-TOKEN': process.env.API_SECRET_TOKEN,
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
         },
@@ -160,7 +160,7 @@ export default function App() {
       const response = await fetch("/api/real-estate/objects/", {
         method: "POST",
         headers: {
-          "X-API-TOKEN": "your_generated_secret_token_here",
+          "X-API-TOKEN": process.env.API_SECRET_TOKEN,
         },
         body: data,
       });
