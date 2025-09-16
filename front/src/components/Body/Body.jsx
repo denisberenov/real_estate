@@ -34,7 +34,9 @@ export default function Body({
   setShowFilters,
   loading,
   fullData,
-  fetchAllObjects
+  fetchAllObjects,
+  setLoading,
+  setfullData
 }) {
 
   const [view, setView] = useState("list");
@@ -50,6 +52,9 @@ export default function Body({
           setShowForm={setShowForm}
           setPage={setPage}
           handleSearchClick={handleSearchClick}
+          setLoading={setLoading}
+          setData={setData}
+          setError={setError}
         />
       )}
 
@@ -90,6 +95,12 @@ export default function Body({
                 fetchAllObjects={fetchAllObjects}
                 setPage={setPage}
                 handleSearchClick={handleSearchClick}
+                setLoading={setLoading}
+                setShowForm={setShowForm}
+                filters={filters}
+                setData={setData}
+                setError={setError}
+                setfullData={setfullData}
               />
               {view === "list" && data.count > 9 && (
                 <Pagination page={page} setPage={setPage} data={data} />

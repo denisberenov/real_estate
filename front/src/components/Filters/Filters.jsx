@@ -9,7 +9,10 @@ export default function Filters({
     setShowForm,
     showFilters,
     setPage,
-    handleSearchClick
+    handleSearchClick,
+    setLoading,
+    setData,
+    setError
 }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -113,7 +116,14 @@ export default function Filters({
         onClick={() => {
             setShowFilters(false);
             setPage(1);
-            handleSearchClick(1);
+            handleSearchClick({
+                pageNumber: 1,
+                setLoading,
+                setShowForm,
+                filters,
+                setData,
+                setError
+              });
           }}
       >
         Search

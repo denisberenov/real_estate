@@ -9,7 +9,13 @@ export default function ResultsList({
   setView, 
   fetchAllObjects,
   setPage,
-  handleSearchClick
+  handleSearchClick,
+  setLoading,
+  setShowForm,
+  filters,
+  setData,
+  setError,
+  setfullData
 }) {
   const [fullscreenImages, setFullscreenImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -29,7 +35,14 @@ export default function ResultsList({
             onClick={() => {
               setView("list");
               setPage(1);
-              handleSearchClick(1);
+              handleSearchClick({
+                pageNumber: 1,
+                setLoading,
+                setShowForm,
+                filters,
+                setData,
+                setError
+              });
             }}
           >
             List
@@ -39,7 +52,15 @@ export default function ResultsList({
             onClick={() => {
               setView("map"); 
               setPage(1);
-              fetchAllObjects();
+              fetchAllObjects({
+                    setLoading,
+                    setShowForm,
+                    filters,
+                    setData,
+                    setError,
+                    setfullData,
+                    data
+              });
             }}
           >
             Map
