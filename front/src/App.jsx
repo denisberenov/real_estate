@@ -5,6 +5,7 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Body from './components/Body/Body';
 import { handleSearchClick, fetchAllObjects } from './services/search';
+import { getCoordinatesOSM } from './services/coordinates'
 
 const PROPERTY_TYPES = [
   { value: 'house', label: 'House' },
@@ -131,20 +132,6 @@ export default function App() {
     } catch (error) {
       console.error("Error creating real estate object:", error);
       alert("Failed to create object: " + error.message);
-    }
-  };
-
-  const getCoordinatesOSM = async (address) => {
-    const encodedAddress = encodeURIComponent(address);
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodedAddress}&format=json`;
-    
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (data.length > 0) {
-      return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
-    } else {
-      throw new Error("Address not found");
     }
   };
 
