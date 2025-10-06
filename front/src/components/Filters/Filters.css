@@ -1,3 +1,5 @@
+@import '../../services/animations.css';
+
 .filters-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* two columns */
@@ -9,6 +11,7 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   margin-top: 70px;
   margin-bottom: 0px;
+  animation: fadeInUp 1s ease forwards;
 }
 
 .filters-container label {
