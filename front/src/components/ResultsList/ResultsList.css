@@ -1,3 +1,5 @@
+@import '../../services/animations.css';
+
 .results-wrapper {
   width: 60%;
   max-width: 1200px;
@@ -30,6 +32,7 @@
 
   /* clip anything that pokes outside (e.g., images) */
   overflow: hidden;
+  animation: slideInLeft 1.5s ease forwards;
 }
 
 /* text + gallery side by side */

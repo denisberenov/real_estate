@@ -1,0 +1,69 @@
+export const handleDeleteRequest = async (id, setLoading, setError, setOtpSent) => {
+    setLoading(true);
+    try {
+        const response = await fetch(
+        `/api/real-estate/objects/${id}/request_delete/`,
+        {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            "X-API-TOKEN": "your_generated_secret_token_here",
+            },
+            body: JSON.stringify({ id }),
+        }
+        );
+
+        if (!response.ok) {
+        throw new Error("Failed to trigger email");
+        }
+
+        const data = await response.json();  // ✅ read once
+
+        setOtpSent(true);  // switch to OTP modal
+    } catch (error) {
+        console.error("Catch error:", error);
+        setError("Error sending OTP. Try again.");
+    } finally {
+        setLoading(false);
+    }
+  };
+
+export const handleVerifyOtp = async (
+    setLoading, 
+    setError,
+    item,
+    onSearchClick,
+    onDeleteConfirmed,
+    otp,
+    setShowForm, 
+    filters,
+    setData
+) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/real-estate/objects/${item.id}/confirm_delete/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-TOKEN": "your_generated_secret_token_here",
+        },
+        body: JSON.stringify({ otp }),
+      });
+      if (!response.ok) throw new Error("Invalid OTP");
+
+      await response.json();
+      onDeleteConfirmed?.(item.id);
+      onSearchClick?.(
+        1,
+        setLoading,
+        setShowForm,
+        filters,
+        setData,
+        setError
+    ); 
+    } catch (e) {
+      setError("Invalid or expired OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
