@@ -1,5 +1,6 @@
 import React from 'react';
 import './Filters.css';
+import { handleChange } from '../../services/search';
 
 export default function Filters({ 
     filters, 
@@ -14,13 +15,6 @@ export default function Filters({
     setData,
     setError
 }) {
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   return (
     <form className="filters-container">
@@ -30,7 +24,7 @@ export default function Filters({
           type="text"
           name="city"
           value={filters.city || ''}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFilters)}
           placeholder="Enter city"
         />
       </label>
@@ -41,7 +35,7 @@ export default function Filters({
           type="number"
           name="price_min"
           value={filters.price_min || ''}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFilters)}
           placeholder="Min price"
           min="0"
         />
@@ -53,7 +47,7 @@ export default function Filters({
           type="number"
           name="price_max"
           value={filters.price_max || ''}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFilters)}
           placeholder="Max price"
           min="0"
         />
@@ -65,7 +59,7 @@ export default function Filters({
           type="number"
           name="area_min"
           value={filters.area_min || ''}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFilters)}
           placeholder="Min area"
           min="0"
         />
@@ -77,7 +71,7 @@ export default function Filters({
           type="number"
           name="area_max"
           value={filters.area_max || ''}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFilters)}
           placeholder="Max area"
           min="0"
         />
@@ -89,7 +83,7 @@ export default function Filters({
           type="number"
           name="rooms_min"
           value={filters.rooms_min || ''}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFilters)}
           placeholder="Min rooms"
           min="0"
         />
@@ -100,7 +94,7 @@ export default function Filters({
         <select
           name="property_type"
           value={filters.property_type || ''}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFilters)}
         >
           <option value="">All</option>
           {propertyTypes.map((type) => (

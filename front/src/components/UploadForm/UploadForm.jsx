@@ -1,37 +1,37 @@
 import React from 'react';
 import { useState } from "react";
-
+import { handleFilesChange } from '../../services/submit';
 import './UploadForm.css';
 
 export default function UploadForm({ 
   formData, 
   setFormData, 
   handleFormSubmit, 
-  PROPERTY_TYPES 
+  PROPERTY_TYPES,
+  setLoading,
+  setShowForm,
+  filters,
+  setData,
+  setError
 }) {
   const [images, setImages] = useState([]);
-
-  const handleFilesChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    setImages((prevImages) => {
-      // Merge old + new files
-      const combined = [...prevImages, ...selectedFiles];
-      // Keep only first 10
-      return combined.slice(0, 10);
-    });
-
-    // If you also want these images in formData for submit:
-    setFormData((prev) => ({
-      ...prev,
-      images: [...(prev.images || []), ...selectedFiles].slice(0, 10),
-    }));
-  };
   
   return (
     <div className="form-wrapper">
     <form
       className="upload-form"
-      onSubmit={handleFormSubmit}
+        onSubmit={(e) =>
+          handleFormSubmit(
+            e,
+            formData,
+            setLoading,
+            setShowForm,
+            filters,
+            setData,
+            setError,
+            setFormData
+          )
+        }
       encType="multipart/form-data"
     >
       <div className="form-grid">
@@ -132,7 +132,7 @@ export default function UploadForm({
           type="file"
           accept="image/*"
           multiple
-          onChange={handleFilesChange}
+          onChange={(e) => handleFilesChange(e, setImages, setFormData)}
           style={{ display: "none" }}
         />
 

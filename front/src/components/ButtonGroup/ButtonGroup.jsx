@@ -39,32 +39,33 @@ export default function ButtonGroup({
           Search
         </button>
       )}
-      {(data || showForm) && (
-        <button
-          className="top-right-search"
-          onClick={() => {
-            setError(null);
-            setShowForm(false);
-            setShowFilters(true);
-            setData(null);
-          }}
-        >
-          Search
-        </button>
-      )}
-      {!showForm && (showFilters || data) && (
-        <button
-          className="top-right-upload"
-          onClick={() => {
-            setError(null);
-            setShowForm(true);
-            setData(null);
-            setShowFilters(false);
-          }}
-        >
-          Upload
-        </button>
-      )}
+
+      <button
+        className="top-right-search"
+        onClick={() => {
+          setError(null);
+          setShowForm(false);
+          setShowFilters(true);
+          setData(null);
+        }}
+        disabled={showFilters}
+      >
+        Search
+      </button>
+    
+      <button
+        className="top-right-upload"
+        onClick={() => {
+          setError(null);
+          setShowForm(true);
+          setData(null);
+          setShowFilters(false);
+        }}
+        disabled={showForm}
+      >
+        Upload
+      </button>
+
     </div>
   );
 }

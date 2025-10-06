@@ -10,7 +10,7 @@
 .button {
   background: #3b82f6;
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 18px 48px;
   color: #fff;
   font-weight: 600;
@@ -40,7 +40,7 @@
   right: 220px;
   background: #3b82f6;
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 12px 24px;
   color: #fff;
   font-weight: 600;
@@ -57,7 +57,7 @@
   right: 100px;
   background: #3b82f6;
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 12px 24px;
   color: #fff;
   font-weight: 600;
@@ -73,6 +73,11 @@
   background: #2563eb;
   box-shadow: 0 12px 25px rgba(37, 99, 235, 0.5);
   transform: translateY(-2px);
+}
+
+.top-right-upload:disabled,
+.top-right-search:disabled {
+    background: gray;
 }
 
 @media (max-width: 480px) {

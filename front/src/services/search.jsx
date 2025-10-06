@@ -94,3 +94,11 @@ export const handleSearchClick = async ({
   
       setLoading(false);
     };
+
+export const handleChange = (e, setFilters) => {
+    const { name, value } = e.target;
+        setFilters((prev) => ({
+        ...prev,
+        [name]: value,
+    }));
+};

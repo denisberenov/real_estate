@@ -6,7 +6,14 @@ import './DetailsModal.css';
 import ObjectMap from '../ObjectMap/ObjectMap';
 import ObjectSmallMap from '../ObjectMap/ObjectSmallMap';
 
-export default function DetailsModal({ obj, onClose, onSearchClick }) {
+export default function DetailsModal({ 
+  obj, 
+  onClose, 
+  onSearchClick,
+  setShowForm,
+  filters,
+  setData
+}) {
   const [fullscreenImages, setFullscreenImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -142,6 +149,9 @@ export default function DetailsModal({ obj, onClose, onSearchClick }) {
               setShowDeleteModal(false);
               onClose?.(); // optional: close details after delete
             }}
+            setShowForm={setShowForm} 
+            filters={filters}
+            setData={setData}
           />
         )}
       </div>

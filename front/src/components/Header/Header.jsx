@@ -1,12 +1,8 @@
 import React from 'react';
 import './Header.css';
+import { handleClick } from '../../services/general';
 
 export default function Header({ data, showForm, showFilters }) {
-  const handleClick = () => {
-    if (data || showForm) {
-      window.location.reload(); // refresh the page
-    }
-  };
 
   return (
     <header
@@ -15,7 +11,7 @@ export default function Header({ data, showForm, showFilters }) {
           ? "header"
           : "top-right-header"
       }
-      onClick={handleClick} // 👈 make it clickable
+      onClick={() => handleClick(data, showForm)} // 👈 make it clickable
       style={{ cursor: (data || showForm) ? "pointer" : "default" }} // pointer only when active
     >
       Direct Real Estate

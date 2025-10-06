@@ -29,17 +29,16 @@ export default function Body({
   handleSearchClick,
   filters,
   setFilters,
-  showFilters,
-  handleOpenFilters,
-  setShowFilters,
   loading,
   fullData,
   fetchAllObjects,
   setLoading,
-  setfullData
+  setfullData,
+  showFilters,
+  setShowFilters,
+  view,
+  setView
 }) {
-
-  const [view, setView] = useState("list");
 
   return (
     <>
@@ -65,7 +64,6 @@ export default function Body({
         setData={setData}
         setPage={setPage}
         handleSearchClick={handleSearchClick}
-        handleOpenFilters={handleOpenFilters}
         showFilters={showFilters}
         setShowFilters={setShowFilters}
         loading={loading}
@@ -80,6 +78,11 @@ export default function Body({
           setFormData={setFormData}
           handleFormSubmit={handleFormSubmit}
           PROPERTY_TYPES={PROPERTY_TYPES}
+          setLoading={setLoading}
+          setShowForm={setShowForm}
+          filters={filters}
+          setData={setData}
+          setError={setError}
         />
       )}
 
@@ -129,6 +132,9 @@ export default function Body({
           obj={selectedObject}
           onClose={() => setSelectedObject(null)}
           onSearchClick={handleSearchClick}
+          setShowForm={setShowForm}
+          filters={filters}
+          setData={setData}
         />
       )}
     </>

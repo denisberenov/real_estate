@@ -1,5 +1,6 @@
 import React from 'react';
 import "./Pagination.css";
+import { handlePageChange } from '../../services/general';
 
 export default function Pagination({ page, setPage, data }) {
   const handlePageChange = (newPage) => {
@@ -11,14 +12,14 @@ export default function Pagination({ page, setPage, data }) {
   return (
     <div className="pagination-controls">
       <button
-        onClick={() => handlePageChange(page - 1)}
+        onClick={() => handlePageChange(setPage, page - 1)}
         disabled={!data?.previous}
       >
         Previous
       </button>
       <span>Page {page}</span>
       <button
-        onClick={() => handlePageChange(page + 1)}
+        onClick={() => handlePageChange(setPage, page + 1)}
         disabled={!data?.next}
       >
         Next
