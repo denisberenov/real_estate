@@ -40,7 +40,7 @@ export default function ButtonGroup({
         </button>
       )}
 
-      {(showForm || showFilters) && (
+      {(showForm || showFilters || data) && (
         <>
           <button
             className="top-right-search"
