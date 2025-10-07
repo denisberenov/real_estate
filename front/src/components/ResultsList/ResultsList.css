@@ -69,11 +69,34 @@
   border-radius: 8px;
 }
 
-/* link style */
 .clickable-title {
+  position: relative;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #1e293b;
   cursor: pointer;
-  color: blue;
-  text-decoration: underline;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.clickable-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background: rgba(30, 64, 175, 0.8);
+  box-shadow: 0 0 6px rgba(30, 64, 175, 0.5);
+  transition: width 0.3s ease;
+}
+
+.clickable-title:hover {
+  color: #1e40af;
+  transform: translateY(-2px);
+}
+
+.clickable-title:hover::after {
+  width: 100%;
 }
 
 /* helpful if titles are very long words */
