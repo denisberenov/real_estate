@@ -1,7 +1,5 @@
- export const handleClick = (data, showForm) => {
-    if (data || showForm) {
+ export const handleClick = () => {
       window.location.reload(); // refresh the page
-    }
   };
 
  export const handlePageChange = (setPage, newPage) => {

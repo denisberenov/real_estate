@@ -11,8 +11,8 @@ export default function Header({ data, showForm, showFilters }) {
           ? "header"
           : "top-right-header"
       }
-      onClick={() => handleClick(data, showForm)} // 👈 make it clickable
-      style={{ cursor: (data || showForm) ? "pointer" : "default" }} // pointer only when active
+      onClick={() => handleClick()}
+      style={{ cursor: (data || showForm || showFilters) ? "pointer" : "default" }}
     >
       Direct Real Estate
     </header>
