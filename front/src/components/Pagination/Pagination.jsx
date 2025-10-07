@@ -12,7 +12,7 @@ export default function Pagination({ page, setPage, data }) {
       >
         Previous
       </button>
-      <span>Page {page}</span>
+      <span>Page {page} from {Math.ceil(parseInt(data.count)/10)}</span>
       <button
         onClick={() => handlePageChange(setPage, page + 1)}
         disabled={!data?.next}
