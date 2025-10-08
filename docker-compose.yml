@@ -145,6 +145,12 @@ services:
       back:
         condition: service_started
 
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+
 volumes:
   postgres_data:
   minio_data:

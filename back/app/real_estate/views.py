@@ -1,4 +1,4 @@
-# views.py
+from django.core.cache import cache
 from rest_framework import viewsets, status, mixins
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
@@ -22,6 +22,11 @@ class RealEstateObjectViewSet(viewsets.ModelViewSet):
         area = self.request.query_params.get("area")             # <= matches area_sq_m
         rooms = self.request.query_params.get("rooms")           # <= rooms__gte
         property_type = self.request.query_params.get("property_type")
+        
+        cache_key = f"real_estate:{city}:{price}:{area}:{rooms}:{property_type}"
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            return cached_data
 
         if city:
             qs = qs.filter(city__icontains=city)
@@ -47,6 +52,8 @@ class RealEstateObjectViewSet(viewsets.ModelViewSet):
         if property_type:
             qs = qs.filter(property_type=property_type)
 
+        cache.set(cache_key, qs, timeout=600)
+        
         return qs
 
     def get_serializer_class(self):
