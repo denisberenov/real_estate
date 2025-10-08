@@ -4,7 +4,8 @@ export const handleSearchClick = async ({
     setShowForm,
     filters,
     setData,
-    setError
+    setError,
+    returnData,
 }) => {
     setLoading(true);
     setShowForm(false);
@@ -18,7 +19,7 @@ export const handleSearchClick = async ({
         params.append(key, value);
       }
     });
-    
+    // console.log(params.toString());
     try {
       const response = await fetch(`/api/real-estate/objects/?${params.toString()}`, {
         method: 'GET',
@@ -36,6 +37,14 @@ export const handleSearchClick = async ({
       }
 
       const result = await response.json();
+
+      if (returnData) {
+        return result
+      }
+    //   console.log("==============================");
+    //   for (let i=0; i<result.results.length; i++) {
+    //     console.log(result.results[i].id);
+    //   }
       setData(result);
       setError(null);
     } catch (err) {
@@ -55,6 +64,7 @@ export const handleSearchClick = async ({
                 setfullData,
                 data
           }) => {
+      
       setLoading(true);
       setShowForm(false);
   
@@ -64,22 +74,28 @@ export const handleSearchClick = async ({
   
       try {
         do {
-          await handleSearchClick({
+          const result = await handleSearchClick({
                 pageNumber: page,
                 setLoading,
                 setShowForm,
                 filters,
                 setData,
-                setError
-          }); // <-- reuse your function
-          const result = data;
+                setError,
+                returnData: true
+          }); 
+          
+        //   console.log("===================");
+        //   for (let i=0;i<result.results.length;i++) {
+        //     console.log(result.results[i].id);
+        //   }
           allObjects = allObjects.concat(result.results || []);
-          const pageSize = 10; // or whatever your API uses
+          const pageSize = 10; 
           totalPages = Math.ceil(result.count / pageSize);
-          console.log(`total pages: ${totalPages}`);
           page += 1;
         } while (page <= totalPages);
-        
+        // for (let i=0; i<allObjects.length; i++) {
+        //     console.log(`id: ${allObjects[i].id}, latitude: ${allObjects[i].latitude}, longtitude: ${allObjects[i].longitude}`);
+        // }
         setfullData(allObjects);
         setError(null);
         
