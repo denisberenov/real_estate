@@ -7,7 +7,7 @@ export const handleDeleteRequest = async (id, setLoading, setError, setOtpSent) 
             method: "POST",
             headers: {
             "Content-Type": "application/json",
-            "X-API-TOKEN": "your_generated_secret_token_here",
+            "X-API-TOKEN": process.env.REACT_APP_API_SECRET_TOKEN,
             },
             body: JSON.stringify({ id }),
         }
@@ -45,7 +45,7 @@ export const handleVerifyOtp = async (
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-API-TOKEN": "your_generated_secret_token_here",
+          "X-API-TOKEN": process.env.REACT_APP_API_SECRET_TOKEN,
         },
         body: JSON.stringify({ otp }),
       });

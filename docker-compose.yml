@@ -137,8 +137,6 @@ services:
     build:
       context: .
       dockerfile: front/Dockerfile
-    env_file:
-      - .env
     ports:
       - "3000:80"
     depends_on:

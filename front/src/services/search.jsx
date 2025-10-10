@@ -25,7 +25,7 @@ export const handleSearchClick = async ({
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-TOKEN': "your_generated_secret_token_here",
+          'X-API-TOKEN': process.env.REACT_APP_API_SECRET_TOKEN,
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
         },

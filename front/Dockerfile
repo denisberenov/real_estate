@@ -1,10 +1,12 @@
 # Stage 1: build React
 FROM node:18-alpine AS build
 WORKDIR /app
+COPY .env .env
 COPY front/package*.json ./
 RUN npm ci
-COPY .env ./
-COPY front/. .
+
+COPY front/ ./
+
 RUN npm run build
 
 # Stage 2: run with nginx

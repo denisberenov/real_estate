@@ -131,7 +131,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-API_SECRET_TOKEN = os.getenv('API_SECRET_TOKEN')
+API_SECRET_TOKEN = os.getenv('REACT_APP_API_SECRET_TOKEN')
 
 CORS_ALLOW_ALL_ORIGINS = True
 

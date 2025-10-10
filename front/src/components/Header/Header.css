@@ -31,3 +31,27 @@
   text-shadow: 4px 4px 12px rgba(30, 64, 175, 0.5);
   cursor: pointer;
 }
+
+@media (max-width: 1200px) {
+    .top-right-header {
+        font-size: 2.5rem;
+        font-weight: 800;
+        left: 70px;
+    }
+}
+
+@media (max-width: 900px) {
+    .top-right-header {
+        font-size: 2rem;
+        font-weight: 700;
+        left: 50px;
+    }
+}
+
+@media (max-width: 600px) {
+    .top-right-header {
+        font-size: 1.6 rem;
+        font-weight: 600;
+        left: 30px;
+    }
+}

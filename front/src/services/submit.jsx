@@ -41,7 +41,7 @@
       const response = await fetch("/api/real-estate/objects/", {
         method: "POST",
         headers: {
-          "X-API-TOKEN": "your_generated_secret_token_here",
+          "X-API-TOKEN": process.env.REACT_APP_API_SECRET_TOKEN,
         },
         body: data,
       });
