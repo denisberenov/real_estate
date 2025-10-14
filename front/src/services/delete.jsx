@@ -49,7 +49,11 @@ export const handleVerifyOtp = async (
         },
         body: JSON.stringify({ otp }),
       });
-      if (!response.ok) throw new Error("Invalid OTP");
+      if (!response.ok) {
+        const error = new Error("OTP error");
+        error.status = response.status;
+        throw error
+      }
 
       await response.json();
       onDeleteConfirmed?.(item.id);
@@ -62,7 +66,12 @@ export const handleVerifyOtp = async (
         setError
     ); 
     } catch (e) {
-      setError("Invalid or expired OTP");
+      const status = e.status
+      if (status == 400) {
+        setError("Invalid or expired OTP");
+      } else if (status == 403) {
+        setError("Max OTP attempts exceeded");
+      }
     } finally {
       setLoading(false);
     }

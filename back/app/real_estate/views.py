@@ -10,6 +10,8 @@ from .serializers import (
 )
 from rest_framework.decorators import action
 from .tasks import send_delete_otp  
+from django.utils import timezone
+from datetime import timedelta
 
 class RealEstateObjectViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
@@ -99,7 +101,6 @@ class RealEstateObjectViewSet(viewsets.ModelViewSet):
         """Send OTP to the email address of the object owner."""
         obj = self.get_object()
 
-        # For now let's assume `obj` has a field `email`
         if not obj.email:
             return Response({"error": "No email associated"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -107,10 +108,10 @@ class RealEstateObjectViewSet(viewsets.ModelViewSet):
         import random
         otp = str(random.randint(100000, 999999))
 
-        # Store OTP temporarily (DB, cache, Redis, etc.)
-        # simplest: attach to obj for now
         obj.deletion_otp = otp
-        obj.save(update_fields=["deletion_otp"])
+        obj.otp_created_at = timezone.now()
+        obj.otp_attempts = 0
+        obj.save(update_fields=["deletion_otp", "otp_created_at", "otp_attempts"])
 
         # Send OTP via Celery
         send_delete_otp.delay(obj.email, otp)
@@ -118,9 +119,21 @@ class RealEstateObjectViewSet(viewsets.ModelViewSet):
         return Response({"message": f"OTP sent to {obj.email}"}, status=status.HTTP_200_OK)
     
     @action(detail=True, methods=["post"])
-    def confirm_delete(self, request, pk=None):
+    def confirm_delete(self, request, pk=None):        
         obj = self.get_object()
         otp = request.data.get("otp")
+        
+        OTP_LIFETIME = timedelta(minutes=3)
+        MAX_ATTEMPTS = 3
+        
+        if timezone.now() > obj.otp_created_at + OTP_LIFETIME:
+            return Response({"error": "OTP expired"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        obj.otp_attempts += 1
+        obj.save(update_fields=["otp_attempts"])
+        
+        if obj.otp_attempts > MAX_ATTEMPTS:
+            return Response({"error": "max OTP attempts exceeded"}, status=status.HTTP_403_FORBIDDEN)
 
         if otp != obj.deletion_otp:
             return Response({"error": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)

@@ -30,6 +30,8 @@ class RealEstateObject(models.Model):
     image = models.ImageField(upload_to='real_estate_images/', blank=True, null=True) 
     email = models.EmailField(max_length=255, help_text="Email used to verify ownership for deletion")
     deletion_otp = models.CharField(max_length=6, blank=True, null=True)
+    otp_created_at = models.DateTimeField(blank=True, null=True)
+    otp_attempts = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
