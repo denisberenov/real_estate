@@ -12,6 +12,7 @@ from rest_framework.decorators import action
 from .tasks import send_delete_otp  
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib.auth.hashers import make_password, check_password
 
 class RealEstateObjectViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
@@ -108,7 +109,7 @@ class RealEstateObjectViewSet(viewsets.ModelViewSet):
         import random
         otp = str(random.randint(100000, 999999))
 
-        obj.deletion_otp = otp
+        obj.deletion_otp = make_password(otp)
         obj.otp_created_at = timezone.now()
         obj.otp_attempts = 0
         obj.save(update_fields=["deletion_otp", "otp_created_at", "otp_attempts"])
@@ -135,7 +136,7 @@ class RealEstateObjectViewSet(viewsets.ModelViewSet):
         if obj.otp_attempts > MAX_ATTEMPTS:
             return Response({"error": "max OTP attempts exceeded"}, status=status.HTTP_403_FORBIDDEN)
 
-        if otp != obj.deletion_otp:
+        if not check_password(otp, obj.deletion_otp):
             return Response({"error": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
 
         obj.delete()
