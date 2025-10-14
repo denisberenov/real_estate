@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const handleDeleteRequest = async (id, setLoading, setError, setOtpSent) => {
     setLoading(true);
     try {
@@ -57,6 +59,12 @@ export const handleVerifyOtp = async (
 
       await response.json();
       onDeleteConfirmed?.(item.id);
+
+      toast.success("✅ Real estate object deleted successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+
       onSearchClick?.(
         1,
         setLoading,

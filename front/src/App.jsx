@@ -6,6 +6,8 @@ import Footer from './components/Footer/Footer';
 import Body from './components/Body/Body';
 import { handleSearchClick, fetchAllObjects } from './services/search';
 import { handleFormSubmit } from './services/submit';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PROPERTY_TYPES = [
   { value: 'house', label: 'House' },
@@ -91,6 +93,7 @@ export default function App() {
         setView={setView}
       />
       <Footer />
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 }
