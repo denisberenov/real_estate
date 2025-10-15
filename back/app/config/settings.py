@@ -133,7 +133,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 API_SECRET_TOKEN = os.getenv('REACT_APP_API_SECRET_TOKEN')
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
+
+CORS_ALLOWED_ORIGINS = [
+    os.getenv("LOCAL_DEVELOPMENT_CORS"),
+    "https://your-frontend-domain.com",  # production frontend
+]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
